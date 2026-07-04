@@ -34,16 +34,29 @@ Deno.serve(async (req) => {
       throw new Error(playlistData.error?.message || 'Failed to fetch episodes');
     }
 
-    const episodes = (playlistData.items ?? []).map((item: any) => ({
-      videoId: item.snippet.resourceId.videoId,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      publishedAt: item.snippet.publishedAt,
-      thumbnail:
-        item.snippet.thumbnails?.maxres?.url ||
-        item.snippet.thumbnails?.high?.url ||
-        item.snippet.thumbnails?.medium?.url,
-    }));
+    type YoutubeSnippet = {
+      resourceId: { videoId: string };
+      title: string;
+      description: string;
+      publishedAt: string;
+      thumbnails?: Record<string, { url?: string }>;
+    };
+
+    const playlistItems = Array.isArray(playlistData.items) ? playlistData.items : [];
+    const episodes = playlistItems.map((item) => {
+      const snippet = item?.snippet as YoutubeSnippet | undefined;
+      return {
+        videoId: snippet?.resourceId.videoId ?? "",
+        title: snippet?.title ?? "",
+        description: snippet?.description ?? "",
+        publishedAt: snippet?.publishedAt ?? "",
+        thumbnail:
+          snippet?.thumbnails?.maxres?.url ||
+          snippet?.thumbnails?.high?.url ||
+          snippet?.thumbnails?.medium?.url ||
+          "",
+      };
+    });
 
     return new Response(JSON.stringify({ episodes }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=600' },
