@@ -16,27 +16,27 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-28 md:h-36 bg-shell border-b border-shell-border">
+    <header className="fixed top-0 left-0 right-0 z-50 h-20 md:h-24 bg-shell border-b border-shell-border">
       <div className="container mx-auto flex h-full items-center justify-between px-4 md:px-8 gap-4">
-        <Link to="/" className="flex items-center gap-3 md:gap-5 shrink-0">
+        <Link to="/" className="flex items-center gap-3 shrink-0">
           <img
             src={logo}
             alt="EGP Logo"
-            className="h-20 w-20 md:h-28 md:w-28 object-contain"
+            className="h-11 w-11 md:h-14 md:w-14 object-contain"
           />
-          <span className="font-display text-xl md:text-3xl font-bold tracking-tight text-shell-foreground hidden sm:inline">
+          <span className="font-display text-lg md:text-h3 font-bold tracking-tight text-shell-foreground hidden sm:inline">
             <span className="gradient-text-bright">Evolvance</span> Growth Partners
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => {
             const active = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-lg lg:text-2xl font-body font-semibold transition-colors hover:text-primary ${
+                className={`font-body text-base font-medium transition-colors hover:text-primary ${
                   active ? "text-primary" : "text-shell-foreground"
                 }`}
               >
@@ -62,7 +62,7 @@ const Header = () => {
                     key={item.path}
                     to={item.path}
                     onClick={() => setOpen(false)}
-                    className={`text-lg font-display font-medium transition-colors hover:text-primary ${
+                    className={`font-display text-base font-medium transition-colors hover:text-primary ${
                       location.pathname === item.path ? "text-primary" : "text-foreground"
                     }`}
                   >
@@ -70,7 +70,7 @@ const Header = () => {
                   </Link>
                 ))}
                 <Link to="/book" onClick={() => setOpen(false)}>
-                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold">
+                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                     Book a Discovery Call
                   </Button>
                 </Link>
@@ -81,7 +81,7 @@ const Header = () => {
           <Link to="/book" className="hidden md:block">
             <Button
               size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold animate-pulse-glow text-sm md:text-base px-5 py-5"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-5"
             >
               Book a Discovery Call
             </Button>

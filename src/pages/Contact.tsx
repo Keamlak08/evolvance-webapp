@@ -22,22 +22,20 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen pt-28 md:pt-36">
-      <section className="py-12 md:py-20">
+    <div className="min-h-screen pt-24 md:pt-28">
+      <section className="py-14 md:py-20">
         <div className="container mx-auto px-6">
           <div className="grid gap-12 lg:gap-16 lg:grid-cols-2">
             {/* LHS — Get in touch */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <h1 className="font-display text-4xl md:text-5xl font-bold">
-                <span className="gradient-text">Get in Touch</span>
-              </h1>
-              <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-lg">
+              <h1 className="font-display text-h1 font-bold">Get in Touch</h1>
+              <p className="mt-4 text-body-lg font-body text-muted-foreground max-w-lg">
                 Have questions about our services? Send us a message and we'll get back to you shortly.
               </p>
 
-              <form onSubmit={handleSubmit} className="mt-8 glass-card rounded-2xl p-6 md:p-8 space-y-5">
+              <form onSubmit={handleSubmit} className="mt-8 plain-card p-6 md:p-8 space-y-5">
                 <div>
-                  <label className="text-sm font-body font-semibold">Name</label>
+                  <label className="text-caption font-body font-semibold">Name</label>
                   <Input
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -47,7 +45,7 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-body font-semibold">Email</label>
+                  <label className="text-caption font-body font-semibold">Email</label>
                   <Input
                     type="email"
                     value={form.email}
@@ -58,7 +56,7 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-body font-semibold">Company</label>
+                  <label className="text-caption font-body font-semibold">Company</label>
                   <Input
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
@@ -67,7 +65,7 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-body font-semibold">Message</label>
+                  <label className="text-caption font-body font-semibold">Message</label>
                   <Textarea
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -77,16 +75,13 @@ const Contact = () => {
                     className="mt-1 bg-secondary"
                   />
                 </div>
-                <Button
-                  type="submit"
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold"
-                >
+                <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                   Send Message
                 </Button>
               </form>
 
-              <div className="mt-8 glass-card rounded-2xl p-6 md:p-8">
-                <h3 className="font-display text-lg md:text-xl font-bold mb-4">Or contact directly</h3>
+              <div className="mt-8 plain-card p-6 md:p-8">
+                <h3 className="font-display text-h3 font-bold mb-4">Or contact directly</h3>
                 <div className="space-y-3">
                   <a
                     href="tel:7039469619"
@@ -95,7 +90,7 @@ const Contact = () => {
                     <div className="rounded-lg bg-pale-azure p-2.5">
                       <Phone className="h-5 w-5 text-deep-azure" />
                     </div>
-                    <span className="font-medium">703-946-9619</span>
+                    <span className="font-body font-medium text-body">703-946-9619</span>
                   </a>
                   <a
                     href="mailto:ethan@evolvancepartners.com"
@@ -104,7 +99,7 @@ const Contact = () => {
                     <div className="rounded-lg bg-pale-azure p-2.5">
                       <Mail className="h-5 w-5 text-deep-azure" />
                     </div>
-                    <span className="font-medium">ethan@evolvancepartners.com</span>
+                    <span className="font-body font-medium text-body">ethan@evolvancepartners.com</span>
                   </a>
                 </div>
               </div>
@@ -112,15 +107,13 @@ const Contact = () => {
 
             {/* RHS — Calendly */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <h2 className="font-display text-3xl md:text-4xl font-bold leading-tight">
-                Book a <span className="gradient-text">Discovery Call</span>
-              </h2>
-              <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-lg">
+              <h2 className="font-display text-h2 font-bold leading-tight">Book a Discovery Call</h2>
+              <p className="mt-4 text-body-lg font-body text-muted-foreground max-w-lg">
                 Learn more about our services and receive a free customized{" "}
-                <span className="font-display font-semibold"><span className="gradient-text">Evolvance</span> Growth Plan</span>.
+                <span className="font-display font-semibold text-deep-azure">Evolvance Growth Plan</span>.
               </p>
 
-              <div className="mt-6 glass-card rounded-2xl overflow-hidden p-1">
+              <div className="mt-6 plain-card overflow-hidden p-1">
                 <iframe
                   src="https://calendly.com/ethan-evolvancepartners/discovery-call-with-ethan?embed_domain=evolvancepartners.com&embed_type=Inline&background_color=FCF9F3&text_color=141414&primary_color=01AEDD"
                   title="Schedule a discovery call with Ethan"

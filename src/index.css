@@ -112,6 +112,16 @@
 .border-deep-azure { border-color: hsl(193 99% 31%); }
 .bg-pale-azure { background-color: hsl(193 99% 44% / 0.12); }
 
+/* Section kickers — small caps label above headings */
+.text-overline {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 /* Light glass card on cream */
 .glass-card {
   background: hsla(36, 71%, 99%, 0.85);
@@ -119,6 +129,15 @@
   backdrop-filter: blur(8px);
   border: 1px solid hsla(30, 15%, 78%, 0.7);
   box-shadow: 0 4px 18px -10px hsla(205, 91%, 9%, 0.15);
+}
+
+/* Plain card — replaces glass-card in most places for a quieter, more
+   editorial feel. Reserve glass-card for elements that actually sit on
+   top of an image or gradient background. */
+.plain-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
 }
 
 /* Shell (header/footer) helpers */

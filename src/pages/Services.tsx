@@ -105,10 +105,10 @@ const credentials = [
 
 const Services = () => {
   return (
-    <div className="min-h-screen pt-28 md:pt-36">
+    <div className="min-h-screen pt-24 md:pt-28">
       {/* SECTION 1 — HERO */}
       <section
-        className="relative py-12 md:py-20 bg-no-repeat bg-center bg-cover"
+        className="relative py-14 md:py-24 bg-no-repeat bg-center bg-cover"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div
@@ -123,34 +123,34 @@ const Services = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-[75%]"
+            className="max-w-2xl"
           >
-            <h1 className="font-display text-3xl md:text-4xl font-bold leading-[1.05] tracking-tight text-foreground">
-              We Partner with Small & Medium Businesses <br />
-              to<span className="gradient-text"> Empower Growth Evolution</span> through AI
+            <h1 className="font-display text-3xl md:text-h1 font-bold leading-[1.1] tracking-tight text-foreground">
+              We Partner with Small &amp; Medium Businesses to{" "}
+              <span className="gradient-text">Empower Growth Evolution</span> through AI
             </h1>
-            <p className="mt-6 md:mt-8 text-lg md:text-2xl text-muted-foreground underline underline-offset-4 decoration-primary">
+            <p className="mt-6 text-body-lg text-muted-foreground underline underline-offset-4 decoration-primary font-body">
               We help clients achieve growth aspirations by:
             </p>
-            <ul className="mt-5 space-y-4 md:space-y-5">
+            <ul className="mt-5 space-y-4">
               {aspirations.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-start gap-3 md:gap-4">
-                  <span className="mt-1 rounded-md bg-pale-azure p-2">
-                    <Icon className="h-5 w-5 md:h-7 md:w-7 text-deep-azure" />
+                <li key={label} className="flex items-start gap-3">
+                  <span className="mt-0.5 rounded-lg bg-pale-azure p-2 shrink-0">
+                    <Icon className="h-5 w-5 text-deep-azure" />
                   </span>
-                  <span className="text-lg md:text-2xl text-foreground/90">{label}</span>
+                  <span className="text-body-lg font-body text-foreground/90">{label}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-8 md:mt-10 inline-block rounded-xl border-l-4 border-primary bg-background/60 backdrop-blur-sm px-5 py-4 md:px-7 md:py-5">
-              <p className="text-base md:text-2xl text-foreground/90 leading-relaxed">
+            <div className="mt-8 rounded-xl border-l-4 border-primary bg-background/60 backdrop-blur-sm px-5 py-4">
+              <p className="text-body font-body text-foreground/90 leading-relaxed">
                 <span className="font-display font-bold gradient-text">Evolvance</span>{" "}
                 <span className="italic text-muted-foreground">(n.):</span> An evolved state where advancement is
                 continuous.
               </p>
-              <p className="mt-2 text-base md:text-xl text-muted-foreground italic leading-relaxed">
-                E.g. — "SMBs are uniquely positioned to achieve{" "}
+              <p className="mt-2 text-caption font-body text-muted-foreground italic leading-relaxed">
+                E.g., "SMBs are uniquely positioned to achieve{" "}
                 <span className="not-italic font-bold text-foreground">evolvance</span> in the AI era."
               </p>
             </div>
@@ -161,36 +161,33 @@ const Services = () => {
       {/* DIVIDER 1 — Ready to Grow CTA */}
       <section className="py-10 md:py-14">
         <div className="container mx-auto px-6">
-          <div className="glass-card rounded-2xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+          <div className="plain-card p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8">
             <Link to="/book" className="shrink-0">
               <Button
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold text-lg md:text-2xl px-8 py-6 md:px-10 md:py-7 animate-pulse-glow"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 animate-pulse-glow"
               >
                 Ready to Grow?
-                <ArrowRight className="ml-1 h-5 w-5" />
+                <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
-            <p className="text-base md:text-2xl text-foreground/85 leading-snug text-center md:text-left">
+            <p className="text-body font-body text-foreground/85 leading-snug text-center md:text-left">
               Book a call with us, and we will build your customized{" "}
               <span className="font-display font-semibold">
                 <span className="gradient-text">Evolvance</span> Growth Plan
               </span>{" "}
-              100% FREE.
+              100% free.
             </p>
           </div>
         </div>
       </section>
 
       {/* TRANSITION DIVIDER 2 */}
-      <section className="py-12 md:py-20 bg-[hsl(var(--shell))] text-shell-foreground">
+      <section className="py-14 md:py-20 bg-[hsl(var(--shell))] text-shell-foreground">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-body uppercase tracking-[0.3em] text-primary text-lg md:text-2xl font-semibold">
-            The Evolvance Partnership Model
-          </p>
-          <h2 className="mt-4 font-display text-3xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl mx-auto">
-            A Three Phase Pathway To Owning Your <span className="gradient-text-bright">Growth Evolution</span> by
-            leveraging AI
+          <p className="text-overline text-primary">The Evolvance Partnership Model</p>
+          <h2 className="mt-4 font-display text-h2 md:text-h1 font-bold leading-tight max-w-3xl mx-auto">
+            A Three Phase Pathway To Owning Your Growth Evolution by Leveraging AI
           </h2>
         </div>
       </section>
@@ -211,7 +208,7 @@ const Services = () => {
                 className="grid items-center gap-10 md:gap-14 md:grid-cols-5"
               >
                 <div className={`md:col-span-2 ${textOnRight ? "md:order-1" : "md:order-2"}`}>
-                  <div className="overflow-hidden rounded-2xl border border-border shadow-lg">
+                  <div className="overflow-hidden rounded-xl border border-border">
                     <img
                       src={phase.image}
                       alt={phase.alt}
@@ -224,20 +221,18 @@ const Services = () => {
                 </div>
 
                 <div className={`md:col-span-3 ${textOnRight ? "md:order-2" : "md:order-1"}`}>
-                  <p className="font-body uppercase tracking-[0.25em] text-deep-azure text-base md:text-lg font-semibold">
-                    {phase.n}
-                  </p>
-                  <h3 className="mt-2 font-display text-4xl md:text-6xl font-bold leading-tight">{phase.title}</h3>
+                  <p className="text-overline text-deep-azure">{phase.n}</p>
+                  <h3 className="mt-2 font-display text-h2 font-bold leading-tight">{phase.title}</h3>
                   <div className="mt-5 rounded-lg border-l-4 border-primary bg-pale-azure px-4 py-3">
-                    <p className="text-lg md:text-2xl italic text-foreground/85">{phase.guarantee}</p>
+                    <p className="text-body-lg font-body italic text-foreground/85">{phase.guarantee}</p>
                   </div>
-                  <ul className="mt-6 space-y-4 md:space-y-5">
+                  <ul className="mt-6 space-y-4">
                     {phase.bullets.map((b) => (
                       <li key={b.h} className="flex gap-3">
-                        <CheckCircle2 className="h-6 w-6 md:h-7 md:w-7 text-deep-azure mt-1 shrink-0" />
+                        <CheckCircle2 className="h-5 w-5 text-deep-azure mt-1 shrink-0" />
                         <div>
-                          <p className="font-display font-semibold text-xl md:text-3xl">{b.h}</p>
-                          <p className="mt-1 text-lg md:text-xl text-muted-foreground leading-relaxed">{b.d}</p>
+                          <p className="font-display font-semibold text-h3">{b.h}</p>
+                          <p className="mt-1 text-body font-body text-muted-foreground leading-relaxed">{b.d}</p>
                         </div>
                       </li>
                     ))}
@@ -249,7 +244,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* MEET ETHAN — preserved from prior, recolored via tokens */}
+      {/* MEET ETHAN */}
       <section className="py-16 md:py-24 bg-secondary/40 border-t border-border">
         <div className="container mx-auto px-6">
           <motion.div
@@ -263,34 +258,34 @@ const Services = () => {
               <img
                 src={ethanHeadshot}
                 alt="Ethan Schroeher"
-                className="h-56 w-56 md:h-80 md:w-80 rounded-xl border-2 border-primary object-cover shadow-lg"
+                className="h-48 w-48 md:h-64 md:w-64 rounded-xl border-2 border-primary object-cover"
               />
             </div>
-            <div className="flex-1">
-              <h2 className="font-display text-3xl md:text-6xl font-bold leading-tight">
-                Meet <span className="gradient-text">Ethan Schroeher</span>
+            <div className="flex-1 max-w-2xl">
+              <h2 className="font-display text-h2 font-bold leading-tight">
+                Meet <span className="text-deep-azure">Ethan Schroeher</span>
               </h2>
-              <p className="mt-2 font-body text-lg md:text-2xl font-semibold text-deep-azure">CEO & Founder</p>
-              <p className="mt-5 md:mt-7 text-foreground/85 leading-relaxed text-base md:text-2xl">
-                He's dedicated to helping coaching and training companies unlock their full potential through AI-powered
-                strategies — partnering with leaders to build evolved, efficient operations that drive measurable
-                results.
+              <p className="mt-2 font-body text-body-lg font-semibold text-deep-azure">CEO &amp; Founder</p>
+              <p className="mt-5 text-foreground/85 font-body leading-relaxed text-body">
+                He's dedicated to helping coaching and training companies unlock their full potential through
+                AI-powered strategies, partnering with leaders to build evolved, efficient operations that drive
+                measurable results.
               </p>
-              <p className="mt-4 text-foreground/85 leading-relaxed text-base md:text-2xl">
+              <p className="mt-4 text-foreground/85 font-body leading-relaxed text-body">
                 His mission is simple: help you evolve your business so you can evolve more clients.
               </p>
-              <p className="mt-5 text-foreground/85 leading-relaxed text-base md:text-2xl">
+              <p className="mt-4 text-foreground/85 font-body leading-relaxed text-body">
                 Ethan is driven and equipped to evolve businesses like yours given his entrepreneurial and consulting
                 background:
               </p>
 
-              <div className="mt-6 grid gap-4 md:gap-5 sm:grid-cols-2">
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {credentials.map((cred) => (
-                  <div key={cred.label} className="flex items-center gap-4">
-                    <div className="h-12 w-12 md:h-16 md:w-16 flex-shrink-0 overflow-hidden rounded-lg border border-border bg-white flex items-center justify-center">
+                  <div key={cred.label} className="flex items-center gap-3">
+                    <div className="h-11 w-11 flex-shrink-0 overflow-hidden rounded-lg border border-border bg-white flex items-center justify-center">
                       <img src={cred.logo} alt={cred.label} className="h-full w-full object-cover" />
                     </div>
-                    <p className="text-foreground/80 leading-snug text-sm md:text-lg">{cred.label}</p>
+                    <p className="text-caption font-body text-foreground/80 leading-snug">{cred.label}</p>
                   </div>
                 ))}
               </div>
@@ -299,10 +294,10 @@ const Services = () => {
                 href="https://www.linkedin.com/in/ethan-schroeher/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-7 inline-flex items-center gap-2 text-deep-azure hover:text-primary transition-colors text-base md:text-xl font-body font-semibold"
+                className="mt-6 inline-flex items-center gap-2 text-deep-azure hover:text-primary transition-colors text-body font-body font-semibold"
               >
-                <img src={linkedinIcon} alt="LinkedIn" className="h-6 w-6 rounded" />
-                Connect on LinkedIn →
+                <img src={linkedinIcon} alt="LinkedIn" className="h-5 w-5 rounded" />
+                Connect on LinkedIn &rarr;
               </a>
             </div>
           </motion.div>

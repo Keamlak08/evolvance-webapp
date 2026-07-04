@@ -10,23 +10,23 @@ const navItems = [
 const Footer = () => {
   const location = useLocation();
   return (
-    <footer className="bg-shell border-t border-shell-border py-10 md:py-14">
+    <footer className="bg-shell border-t border-shell-border py-10 md:py-12">
       <div className="container mx-auto px-6 flex flex-col items-center gap-6">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="EGP Logo" className="h-14 w-14 md:h-20 md:w-20 object-contain" />
-          <p className="font-display text-lg md:text-2xl font-bold text-shell-foreground">
+          <img src={logo} alt="EGP Logo" className="h-10 w-10 md:h-12 md:w-12 object-contain" />
+          <p className="font-display text-base md:text-h3 font-bold text-shell-foreground">
             <span className="gradient-text-bright">Evolvance</span> Growth Partners
           </p>
         </div>
 
-        <nav className="flex flex-wrap justify-center gap-6 md:gap-10">
+        <nav className="flex flex-wrap justify-center gap-6 md:gap-8">
           {navItems.map((item) => {
             const active = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-base md:text-xl font-body font-semibold transition-colors hover:text-primary ${
+                className={`font-body text-sm font-medium transition-colors hover:text-primary ${
                   active ? "text-primary" : "text-shell-foreground"
                 }`}
               >
@@ -36,7 +36,7 @@ const Footer = () => {
           })}
         </nav>
 
-        <p className="text-xs md:text-sm text-shell-muted text-center">
+        <p className="text-caption font-body text-shell-muted text-center">
           Evolvance Growth Partners LLC. All rights reserved.
         </p>
       </div>

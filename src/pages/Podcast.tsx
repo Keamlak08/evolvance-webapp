@@ -44,8 +44,8 @@ const Podcast = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pt-28 md:pt-36">
-      <section className="py-12 md:py-20">
+    <div className="min-h-screen pt-24 md:pt-28">
+      <section className="py-14 md:py-20">
         <div className="container mx-auto px-6">
           <div className="grid gap-12 lg:gap-16 lg:grid-cols-[1.4fr_1fr]">
             {/* LHS */}
@@ -55,40 +55,38 @@ const Podcast = () => {
               viewport={{ once: true }}
               variants={fadeUp}
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-pale-azure">
-                <Mic className="h-8 w-8 text-deep-azure" />
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-pale-azure">
+                <Mic className="h-7 w-7 text-deep-azure" />
               </div>
-              <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight">
+              <h1 className="font-display text-h1 font-bold leading-tight">
                 The <span className="gradient-text">Evolution</span> Podcast
               </h1>
-              <p className="mt-5 text-lg md:text-2xl text-muted-foreground leading-relaxed max-w-3xl">
-                A forum for SMB leaders to showcase their business impact, forge meaningful connections, and unlock AI growth insights.
+              <p className="mt-5 text-body-lg font-body text-muted-foreground leading-relaxed max-w-2xl">
+                A forum for SMB leaders to showcase their business impact, forge meaningful connections, and unlock
+                AI growth insights.
               </p>
               <div className="mt-10">
-                <h2 className="font-display text-2xl md:text-3xl font-bold mb-5">What We Highlight and Explore</h2>
+                <h2 className="font-display text-h3 font-bold mb-5">What We Highlight and Explore</h2>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {pillars.map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="glass-card rounded-xl p-5 flex gap-4">
-                      <Icon className="h-7 w-7 text-deep-azure shrink-0 mt-1" />
+                    <div key={title} className="plain-card p-5 flex gap-4">
+                      <Icon className="h-6 w-6 text-deep-azure shrink-0 mt-1" />
                       <div>
-                        <h4 className="font-display font-semibold text-base md:text-lg">{title}</h4>
-                        <p className="mt-1 text-sm text-muted-foreground leading-snug">{desc}</p>
+                        <h4 className="font-display font-semibold text-body">{title}</h4>
+                        <p className="mt-1 text-caption font-body text-muted-foreground leading-snug">{desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-10 glass-card rounded-2xl p-8 md:p-10 text-center">
-                <h3 className="font-display text-2xl md:text-4xl font-bold">Become a Guest on the Show!</h3>
-                <p className="mt-3 text-lg md:text-2xl text-foreground/80">
+              <div className="mt-10 plain-card p-8 md:p-10 text-center">
+                <h3 className="font-display text-h3 font-bold">Become a Guest on the Show!</h3>
+                <p className="mt-3 text-body-lg font-body text-foreground/80">
                   We're accepting applications from leaders for our kickoff series.
                 </p>
                 <Link to="/contact" className="mt-6 inline-block">
-                  <Button
-                    size="lg"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold animate-pulse-glow text-lg md:text-xl px-8 py-6"
-                  >
+                  <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6">
                     Contact Us
                   </Button>
                 </Link>
@@ -104,15 +102,15 @@ const Podcast = () => {
               className="space-y-6"
             >
               {loading && (
-                <div className="glass-card rounded-xl p-4">
+                <div className="plain-card p-4">
                   <div className="aspect-video w-full rounded-lg bg-secondary animate-pulse" />
                 </div>
               )}
 
               {!loading && episodes.length === 0 && (
-                <div className="glass-card rounded-xl p-4">
+                <div className="plain-card p-4">
                   <div className="aspect-video w-full overflow-hidden rounded-lg bg-secondary border border-border flex items-center justify-center text-center px-6">
-                    <p className="font-display text-lg md:text-2xl font-semibold text-foreground">
+                    <p className="font-display text-h3 font-semibold text-foreground">
                       Series 1 Editing in Progress,
                       <br />
                       check back soon!
@@ -123,7 +121,7 @@ const Podcast = () => {
 
               {!loading &&
                 episodes.map((ep) => (
-                  <div key={ep.videoId} className="glass-card rounded-xl p-4 space-y-3">
+                  <div key={ep.videoId} className="plain-card p-4 space-y-3">
                     <div className="aspect-video w-full overflow-hidden rounded-lg bg-secondary border border-border relative group">
                       {activeVideo === ep.videoId ? (
                         <iframe
@@ -146,17 +144,17 @@ const Podcast = () => {
                             loading="lazy"
                           />
                           <div className="absolute inset-0 flex items-center justify-center bg-background/30 group-hover:bg-background/50 transition-colors">
-                            <div className="h-16 w-16 rounded-full bg-primary/90 flex items-center justify-center">
-                              <Play className="h-7 w-7 text-primary-foreground fill-current ml-1" />
+                            <div className="h-14 w-14 rounded-full bg-primary/90 flex items-center justify-center">
+                              <Play className="h-6 w-6 text-primary-foreground fill-current ml-1" />
                             </div>
                           </div>
                         </button>
                       )}
                     </div>
-                    <h3 className="font-display font-semibold text-base md:text-lg leading-snug">
+                    <h3 className="font-display font-semibold text-body leading-snug">
                       {ep.title}
                     </h3>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-caption font-body text-muted-foreground">
                       {new Date(ep.publishedAt).toLocaleDateString(undefined, {
                         year: "numeric",
                         month: "long",
