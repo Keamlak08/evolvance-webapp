@@ -1,2 +1,3 @@
-# evolvance-webapp
-evolvance growth partners webapp - grow your business with ai
+# Welcome to your Lovable project
+
+TODO: Document your project here

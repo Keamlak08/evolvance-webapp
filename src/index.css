@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Off-white whitespace, matte black text */
+    --background: 36 71% 99%;
+    --foreground: 0 0% 8%;
+
+    --card: 36 71% 99%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 36 71% 99%;
+    --popover-foreground: 0 0% 8%;
+
+    /* Brand Azure */
+    --primary: 193 99% 44%;
+    --primary-foreground: 205 90% 9%;
+
+    --secondary: 44 30% 90%;
+    --secondary-foreground: 0 0% 12%;
+
+    --muted: 44 25% 88%;
+    --muted-foreground: 0 0% 32%;
+
+    --accent: 185 83% 64%;
+    --accent-foreground: 205 90% 9%;
+
+    --destructive: 0 75% 45%;
+    --destructive-foreground: 44 60% 97%;
+
+    --border: 30 15% 80%;
+    --input: 30 15% 82%;
+    --ring: 193 99% 44%;
+
+    --radius: 0.5rem;
+
+    /* Header / footer / dark bands — Deep Navy */
+    --shell: 205 91% 9%;
+    --shell-foreground: 36 71% 99%;
+    --shell-muted: 200 22% 70%;
+    --shell-border: 202 55% 15%;
+
+    --sidebar-background: 205 91% 9%;
+    --sidebar-foreground: 36 71% 99%;
+    --sidebar-primary: 193 99% 44%;
+    --sidebar-primary-foreground: 205 90% 9%;
+    --sidebar-accent: 202 55% 15%;
+    --sidebar-accent-foreground: 36 71% 99%;
+    --sidebar-border: 202 55% 15%;
+    --sidebar-ring: 193 99% 44%;
+
+    --glow: 193 99% 50%;
+    --hero-gradient: linear-gradient(90deg, hsla(193, 99%, 50%, 0.14), hsla(185, 83%, 64%, 0.10));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Azure glow */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 18px hsla(193, 99%, 50%, 0.30); }
+  50% { box-shadow: 0 0 36px hsla(193, 99%, 50%, 0.55); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Deeper gradient for light backgrounds — legible on off-white */
+.gradient-text {
+  background: linear-gradient(90deg, #016B88 0%, #129094 50%, #26BB70 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Bright gradient for dark navy header/footer/bands */
+.gradient-text-bright {
+  background: linear-gradient(90deg, #01AEDD 0%, #57E3EF 50%, #56E19C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Deep Azure helpers — for accent TEXT on cream (legible vs bright #01AEDD) */
+.text-deep-azure { color: hsl(193 99% 31%); }
+.border-deep-azure { border-color: hsl(193 99% 31%); }
+.bg-pale-azure { background-color: hsl(193 99% 44% / 0.12); }
+
+/* Light glass card on cream */
+.glass-card {
+  background: hsla(36, 71%, 99%, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsla(30, 15%, 78%, 0.7);
+  box-shadow: 0 4px 18px -10px hsla(205, 91%, 9%, 0.15);
+}
+
+/* Shell (header/footer) helpers */
+.bg-shell { background-color: hsl(var(--shell)); }
+.text-shell-foreground { color: hsl(var(--shell-foreground)); }
+.text-shell-muted { color: hsl(var(--shell-muted)); }
+.border-shell-border { border-color: hsl(var(--shell-border)); }
