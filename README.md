@@ -1,3 +1,1 @@
-# Welcome to your Lovable project
-
-TODO: Document your project here
+Copyright (c) 2026 evolvancepartners. All Rights Reserved.
