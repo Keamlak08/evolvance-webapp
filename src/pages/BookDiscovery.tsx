@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import PageHeader from "@/components/PageHeader";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
@@ -18,18 +19,15 @@ const BookDiscovery = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pt-24 md:pt-28">
+    <div className="min-h-screen">
+      <PageHeader
+        overline="Book a Call"
+        title="Book your discovery session"
+        subtitle="Discuss your biggest issues and goals so we can conquer them together."
+      />
+
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-6">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-            <h1 className="font-display text-h1 font-bold">
-              Book Your <span className="gradient-text">Discovery Session</span>
-            </h1>
-            <p className="mt-4 text-body-lg font-body text-muted-foreground max-w-2xl mx-auto">
-              Discuss your biggest issues and goals so we can conquer them together
-            </p>
-          </motion.div>
-
           <motion.div
             initial="hidden"
             whileInView="visible"

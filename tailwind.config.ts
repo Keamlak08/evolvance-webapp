@@ -18,6 +18,35 @@ export default {
         display: ['"Libre Baskerville"', 'serif'],
         body: ['"IBM Plex Sans"', 'sans-serif'],
       },
+      // Type scale — modern, minimalist, sans-driven.
+      // Libre Baskerville (font-display) is reserved for exactly two moments:
+      // the hero headline and oversized data-callout numbers. Every other
+      // heading, label, and body of text runs on IBM Plex Sans (font-body).
+      // That contrast is the point: one serif "signature" moment against a
+      // clean sans system reads as considerably more current than serif
+      // headings stacked at every level.
+      fontSize: {
+        // Hero headline only. font-display font-bold, italic on the key word.
+        display: ['3.75rem', { lineHeight: '1.02', letterSpacing: '-0.02em' }], // 60px
+        // Page-level headings. font-body font-bold.
+        h1: ['2.25rem', { lineHeight: '1.15', letterSpacing: '-0.01em' }], // 36px
+        // Section headings. font-body font-bold.
+        h2: ['1.75rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }], // 28px
+        // Card titles / sub-section headings. font-body font-semibold.
+        h3: ['1.25rem', { lineHeight: '1.3' }], // 20px
+        // Hero subhead, intro paragraphs.
+        'body-lg': ['1.125rem', { lineHeight: '1.6' }], // 18px
+        // Standard body copy.
+        body: ['1rem', { lineHeight: '1.6' }], // 16px
+        // Uppercase section kickers. Pair with uppercase + tracking-[0.14em].
+        overline: ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.14em' }], // 11px
+        // Oversized stat/number callouts. font-display font-bold + gradient-text.
+        data: ['4rem', { lineHeight: '1' }], // 64px
+        // All CTA and form buttons.
+        btn: ['0.875rem', { lineHeight: '1.2' }], // 14px
+        // Dates, footnotes, fine print.
+        caption: ['0.8125rem', { lineHeight: '1.4' }], // 13px
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -78,10 +107,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 32s linear infinite",
       },
     },
   },

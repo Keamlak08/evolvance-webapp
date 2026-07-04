@@ -11,8 +11,11 @@ const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="text-center">
-        <h1 className="font-display text-display font-bold text-foreground">404</h1>
-        <p className="mt-4 text-body-lg font-body text-muted-foreground">Oops! Page not found</p>
+        <p className="text-overline text-deep-azure mb-3">404</p>
+        <h1 className="font-body text-h1 font-bold text-foreground">Page not found</h1>
+        <p className="mt-4 text-body-lg font-body text-muted-foreground">
+          The page you're looking for doesn't exist.
+        </p>
         <a
           href="/"
           className="mt-6 inline-block font-body text-body font-semibold text-deep-azure hover:text-primary transition-colors"

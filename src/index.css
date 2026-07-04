@@ -67,8 +67,11 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
+  /* Headings default to the sans system font. Libre Baskerville (font-display)
+     is applied explicitly only on the hero headline and data callouts — see
+     the type scale comment in tailwind.config.ts. */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+    @apply font-body;
   }
 }
 
@@ -116,13 +119,14 @@
 .text-overline {
   font-family: "IBM Plex Sans", sans-serif;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   line-height: 1.4;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-/* Light glass card on cream */
+/* Light glass card — reserved for elements sitting on top of an image or
+   gradient background (e.g. the hero definition box). */
 .glass-card {
   background: hsla(36, 71%, 99%, 0.85);
   -webkit-backdrop-filter: blur(8px);
@@ -131,12 +135,18 @@
   box-shadow: 0 4px 18px -10px hsla(205, 91%, 9%, 0.15);
 }
 
-/* Plain card — replaces glass-card in most places for a quieter, more
-   editorial feel. Reserve glass-card for elements that actually sit on
-   top of an image or gradient background. */
+/* Plain card — the default card treatment everywhere else. Solid surface,
+   thin border, no blur. Quieter and more consistent than glass everywhere. */
 .plain-card {
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+}
+
+/* Dark-surface plain card variant, for cards placed on navy bands */
+.plain-card-dark {
+  background: hsl(202 55% 12%);
+  border: 1px solid hsl(var(--shell-border));
   border-radius: 1rem;
 }
 
@@ -145,3 +155,11 @@
 .text-shell-foreground { color: hsl(var(--shell-foreground)); }
 .text-shell-muted { color: hsl(var(--shell-muted)); }
 .border-shell-border { border-color: hsl(var(--shell-border)); }
+
+/* Marquee — fades the left/right edges of a scrolling ticker so content
+   appears to emerge from and dissolve into the background rather than
+   cutting off hard. */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+}

@@ -12,9 +12,9 @@ const Footer = () => {
   return (
     <footer className="bg-shell border-t border-shell-border py-10 md:py-12">
       <div className="container mx-auto px-6 flex flex-col items-center gap-6">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="EGP Logo" className="h-10 w-10 md:h-12 md:w-12 object-contain" />
-          <p className="font-display text-base md:text-h3 font-bold text-shell-foreground">
+        <div className="flex items-center gap-2.5">
+          <img src={logo} alt="EGP Logo" className="h-9 w-9 md:h-10 md:w-10 object-contain" />
+          <p className="font-body text-h3 font-bold text-shell-foreground">
             <span className="gradient-text-bright">Evolvance</span> Growth Partners
           </p>
         </div>
