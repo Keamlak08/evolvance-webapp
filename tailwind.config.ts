@@ -14,25 +14,41 @@ export default {
       },
     },
     extend: {
+      // One typeface, used at different weights to create hierarchy — this
+      // is deliberate, not a placeholder. Two Montserrat "roles" are kept
+      // (display/body) purely so existing component classNames don't need
+      // touching; both resolve to the same family. Poppins rides along as
+      // the fallback instead of a generic keyword: if the webfont request
+      // for Montserrat ever fails, a bare font stack falls through to the
+      // browser's true default, which on most browsers is Times New Roman
+      // — one of the exact fonts being avoided here. Poppins is a real,
+      // intentional, same-character geometric sans, loaded from the same
+      // Google Fonts request, so even that edge case still looks like the
+      // brand instead of breaking.
       fontFamily: {
-        display: ['"Libre Baskerville"', 'serif'],
-        body: ['"IBM Plex Sans"', 'sans-serif'],
+        display: ['"Montserrat"', '"Poppins"'],
+        body: ['"Montserrat"', '"Poppins"'],
+        // Closes a gap: some shadcn/ui internals reference the default
+        // `sans` key via the bare `font-sans` utility. Overriding it here
+        // means even that path resolves to Montserrat/Poppins, not
+        // Tailwind's default ui-sans-serif/system-ui stack.
+        sans: ['"Montserrat"', '"Poppins"'],
       },
-      // Type scale — modern, minimalist, sans-driven.
-      // Libre Baskerville (font-display) is reserved for exactly two moments:
-      // the hero headline and oversized data-callout numbers. Every other
-      // heading, label, and body of text runs on IBM Plex Sans (font-body).
-      // That contrast is the point: one serif "signature" moment against a
-      // clean sans system reads as considerably more current than serif
-      // headings stacked at every level.
+      // Type scale — modern, minimalist, single-typeface.
+      // One family (Montserrat) runs the entire site. Hierarchy comes from
+      // weight and size, not from switching typefaces: the hero display
+      // size pairs with font-extrabold/font-black, most headings sit at
+      // font-bold, card titles and buttons at font-semibold. That's what
+      // keeps the system feeling considered rather than like a stack of
+      // default heading tags.
       fontSize: {
-        // Hero headline only. font-display font-bold, italic on the key word.
+        // Hero headline + splash screen only. font-extrabold, italic on the key word.
         display: ['3.75rem', { lineHeight: '1.02', letterSpacing: '-0.02em' }], // 60px
-        // Page-level headings. font-body font-bold.
+        // Page-level headings. font-bold.
         h1: ['2.25rem', { lineHeight: '1.15', letterSpacing: '-0.01em' }], // 36px
-        // Section headings. font-body font-bold.
+        // Section headings. font-bold.
         h2: ['1.75rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }], // 28px
-        // Card titles / sub-section headings. font-body font-semibold.
+        // Card titles / sub-section headings. font-semibold.
         h3: ['1.25rem', { lineHeight: '1.3' }], // 20px
         // Hero subhead, intro paragraphs.
         'body-lg': ['1.125rem', { lineHeight: '1.6' }], // 18px
@@ -40,7 +56,7 @@ export default {
         body: ['1rem', { lineHeight: '1.6' }], // 16px
         // Uppercase section kickers. Pair with uppercase + tracking-[0.14em].
         overline: ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.14em' }], // 11px
-        // Oversized stat/number callouts. font-display font-bold + gradient-text.
+        // Oversized stat/number callouts. font-extrabold + gradient-text.
         data: ['4rem', { lineHeight: '1' }], // 64px
         // All CTA and form buttons.
         btn: ['0.875rem', { lineHeight: '1.2' }], // 14px

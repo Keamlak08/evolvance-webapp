@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Marquee from "@/components/Marquee";
+import IntroSplash from "@/components/IntroSplash";
 import {
   TrendingUp,
   Users,
@@ -25,18 +25,6 @@ const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
-
-// Short, specific pain points for the scrolling ticker. Each one names a
-// problem an SMB operator would recognize immediately, rather than
-// describing what EGP does — the ticker is a mirror, not a feature list.
-const painPoints = [
-  "Team buried in low-value tasks",
-  "Revenue flat despite more hours worked",
-  "No repeatable system for new clients",
-  "Manual workflows slowing everything down",
-  "Falling behind competitors already using AI",
-  "Growth capped by your own bandwidth",
-];
 
 const aspirations = [
   { icon: TrendingUp, label: "Increasing new-client leads" },
@@ -97,8 +85,10 @@ const phases = [
 const Services = () => {
   return (
     <div className="min-h-screen">
-      {/* ============ HERO — dark navy impact surface ============ */}
-      <section className="relative overflow-hidden bg-shell pt-28 pb-20 md:pt-40 md:pb-28">
+      <IntroSplash />
+
+      {/* ============ HERO — dark navy impact surface, full viewport ============ */}
+      <section className="relative overflow-hidden bg-shell min-h-screen flex items-center pt-20 md:pt-24 pb-16">
         {/* Abstract glow, not a stock photo — keeps the surface quiet and lets
             the typography and gradient do the work. */}
         <div
@@ -120,7 +110,7 @@ const Services = () => {
             <p className="text-overline text-primary mb-5">
               AI-Powered Growth for Small &amp; Medium Businesses
             </p>
-            <h1 className="font-display text-display font-bold leading-[1.02] tracking-tight text-shell-foreground">
+            <h1 className="font-display text-display font-extrabold leading-[1.02] tracking-tight text-shell-foreground">
               Empower Your Growth{" "}
               <span className="italic gradient-text-bright">Evolution</span>
             </h1>
@@ -142,8 +132,8 @@ const Services = () => {
               <a href="#phases">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto border-shell-border text-shell-foreground hover:bg-white/5 hover:text-shell-foreground px-7 py-6"
+                  variant="ghost"
+                  className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6"
                 >
                   See How It Works
                 </Button>
@@ -152,25 +142,13 @@ const Services = () => {
 
             <div className="mt-10 glass-card rounded-xl px-5 py-4 max-w-md">
               <p className="text-body font-body text-foreground/90 leading-relaxed">
-                <span className="font-display font-bold gradient-text">Evolvance</span>{" "}
+                <span className="font-display font-extrabold gradient-text">Evolvance</span>{" "}
                 <span className="italic text-muted-foreground">(n.):</span> An evolved state where
                 advancement is continuous.
               </p>
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* ============ PAIN-POINT TICKER ============ */}
-      <section className="bg-[hsl(202,55%,7%)] border-y border-shell-border py-5">
-        <Marquee
-          items={painPoints.map((p) => (
-            <span key={p} className="flex items-center gap-8 px-8">
-              <span className="text-overline text-primary/90 whitespace-nowrap">{p}</span>
-              <span className="h-1 w-1 rounded-full bg-shell-muted/50" />
-            </span>
-          ))}
-        />
       </section>
 
       {/* ============ ASPIRATIONS STRIP ============ */}

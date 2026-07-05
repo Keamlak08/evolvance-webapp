@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -67,9 +67,11 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
-  /* Headings default to the sans system font. Libre Baskerville (font-display)
-     is applied explicitly only on the hero headline and data callouts — see
-     the type scale comment in tailwind.config.ts. */
+  /* One typeface (Montserrat) runs the whole site. Hierarchy comes from
+     weight and size, not from switching families — the hero headline and
+     splash screen use font-extrabold/font-black, most headings use
+     font-bold/font-semibold. See the type scale comment in
+     tailwind.config.ts for the full size ramp. */
   h1, h2, h3, h4, h5, h6 {
     @apply font-body;
   }
@@ -117,7 +119,7 @@
 
 /* Section kickers — small caps label above headings */
 .text-overline {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Montserrat", "Poppins";
   font-weight: 600;
   font-size: 0.6875rem;
   line-height: 1.4;
