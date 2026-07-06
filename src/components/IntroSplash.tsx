@@ -33,14 +33,23 @@ const IntroSplash = () => {
 
   const finish = useCallback(() => {
     setExiting(true);
-    setTimeout(() => setVisible(false), 650);
+    setTimeout(() => {
+      // This component returns null rather than unmounting once done, so
+      // the effect cleanup below never runs on its own — restore scroll
+      // explicitly here instead of relying on that cleanup firing.
+      document.body.style.overflow = "";
+      setVisible(false);
+    }, 650);
   }, []);
 
   const skip = useCallback(() => {
     if (!exiting) finish();
   }, [exiting, finish]);
 
-  // Lock scroll while the splash is up, always restore on unmount.
+  // Lock scroll while the splash is up. This cleanup is a safety net for
+  // unexpected unmounts (e.g. hot reload) — the real restore happens in
+  // finish() above, since this component deliberately never unmounts on
+  // its own.
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";

@@ -1,166 +1,135 @@
-# Full Revamp — What Changed
+# Scroll Fix + Interactive Scroll + Hero Rework + Bento Skills
 
-This replaces the earlier "styling pass" delivery entirely. That one only
-adjusted sizing on top of the existing structure — this one rebuilds the
-actual page structure and visual language on the same skeleton, keeping
-your brand colors and fonts. Drop these files into your repo at the same
-paths. 12 files total: 10 modified, 2 new.
-
-Verified clean with `tsc --noEmit`, `npm run build`, and `eslint` before
-packaging.
+4 files: 1 bug fix, 1 modified, 2 new. Verified with `tsc --noEmit`,
+`npm run build`, and `eslint` before packaging. No new dependencies —
+everything here runs on Framer Motion, already in the project.
 
 ## Files
-**Modified:** `tailwind.config.ts`, `src/index.css`, `src/components/ui/button.tsx`,
-`src/components/Header.tsx`, `src/components/Footer.tsx`, `src/pages/Services.tsx`
-(your homepage), `src/pages/Contact.tsx`, `src/pages/Podcast.tsx`,
-`src/pages/BookDiscovery.tsx`, `src/pages/NotFound.tsx`
+**Fixed:** `src/components/IntroSplash.tsx`
+**Modified:** `src/pages/Services.tsx`
+**New:** `src/components/InteractiveScroll.tsx`, `src/components/SkillsBento.tsx`
 
-**New:** `src/components/Marquee.tsx`, `src/components/PageHeader.tsx`
+---
 
-## Not touched
-- **Colors.** Still your Azure/Aqua/Green/Navy palette. Untouched.
-- **Logo.** You said that's coming later.
-- **`Index.tsx`, `Home.tsx`, `WhoWeService.tsx`.** Still orphaned, still not
-  wired to any route. Left alone.
-- **Podcast data fetching, Calendly integration, contact form logic.** All
-  functional code is untouched — this was a visual and structural pass.
+## The scroll bug
 
-## Typography — rebuilt per your correction
+Found it. `IntroSplash.tsx` was setting `document.body.style.overflow =
+"hidden"` on mount, with a `useEffect` cleanup meant to restore it. That
+cleanup only runs when the component actually unmounts — but the splash
+never unmounts, it just renders `null` once it's done (`if (!visible)
+return null`). Since `Services.tsx` always renders `<IntroSplash />`
+unconditionally, the component stays mounted forever in a "rendering
+nothing" state, so that cleanup function never fires, and scroll stays
+locked permanently after the intro finishes.
 
-You said the table needed to become more modern and minimalist, not just
-get implemented as-is. Here's the actual change: Libre Baskerville (the
-serif) is now reserved for exactly two moments — the hero headline and,
-later, oversized stat numbers if you add them. Every other heading, card
-title, label, and button on the site now runs on IBM Plex Sans.
+Fixed by restoring `overflow` explicitly inside `finish()`, the same
+place that hides the splash, instead of depending on an unmount that was
+never going to happen. The `useEffect` cleanup is still there as a
+safety net for edge cases like hot-reloading during development, but the
+real fix is the explicit restore.
 
-The old version had Libre Baskerville Bold on H1, H2, *and* H3 — meaning
-every card title across the site was set in heavy serif. That reads as
-editorial or classic, not modern. Pulling the serif back to a single
-appearance makes the one moment it does show up (the hero) actually land,
-instead of the effect getting worn down by repetition.
+---
 
-New scale, in `tailwind.config.ts`:
+## The interactive scroll sequence
 
-| Token | Size | Font | Where |
-|---|---|---|---|
-| `display` | 60px | Baskerville 700 | Hero headline only |
-| `h1` | 36px | Plex Sans 700 | Page titles |
-| `h2` | 28px | Plex Sans 700 | Section headings |
-| `h3` | 20px | Plex Sans 600 | Card titles |
-| `body-lg` | 18px | Plex Sans 400 | Intro paragraphs |
-| `body` | 16px | Plex Sans 400 | Standard copy |
-| `overline` | 11px | Plex Sans 600 | Kickers, uppercase |
-| `data` | 64px | Baskerville 700 | Stat callouts (not used yet) |
-| `btn` | 14px | Plex Sans 600 | All buttons |
-| `caption` | 13px | Plex Sans 400 | Dates, fine print |
+New component: `InteractiveScroll.tsx`, sitting between the hero and the
+credential bar.
 
-## The homepage — rebuilt from the skeleton up
+**How it's built:** a tall wrapper (350% of viewport height) drives a
+scroll-progress value from 0 to 1 using Framer Motion's `useScroll`.
+Inside it, a `sticky top-0 h-screen` panel stays pinned to the screen for
+that entire scroll distance, while everything inside it — the heading,
+each pain-point card, the solution block — is positioned with opacity and
+position tied directly to that scroll progress via `useTransform`. That's
+the difference between this and a normal "fade in when scrolled into
+view" animation: this tracks the scrollbar directly, so scrolling slower
+or faster changes the pacing in real time, and scrolling back up reverses
+it.
 
-**Hero.** No longer a cream section with a stock photo. It's now full dark
-navy (your shell color) with two soft abstract glow shapes in azure and
-green behind the text, done in pure CSS gradients, not an image. The
-headline is shortened to "Empower Your Growth Evolution," with "Evolution"
-set in italic Libre Baskerville and the bright gradient. Below it: a tight
-subhead, two CTAs (primary "Book a Discovery Call," secondary "See How It
-Works" that scroll-links to the phases section), and the Evolvance
-definition box restyled as a translucent card sitting on the dark surface.
+**The sequence, mapped to scroll progress:**
+- 0–5%: blank, matching "a bit blank page" from your instructions
+- 5–38%: "Sound familiar?" fades in, then six pain-point cards land one
+  at a time in scattered positions around the screen (not stacked, not
+  all at once), each styled as a small amber warning card with a
+  triangle icon — matching the look in your Subduxion screenshot
+- 55–65%: all the cards and the heading clear together
+- 68–91%: the solution beat arrives — "Here's how we fix it" plus the
+  five "we help you achieve" items, the same content that used to be the
+  standalone strip right under the old hero
+- 91–97%: fades out
+- 97–100%: blank tail, so releasing the pin doesn't look like a jump-cut
 
-I did shorten the headline — the original was 16 words, and a headline
-that long can't carry the gradient/italic treatment cleanly at any real
-size. This was already flagged as a recommendation in the design doc; I
-went ahead and applied it since you asked for the full rework this time.
-Happy to adjust the wording, that part's easy to tune.
+**Why it releases cleanly on its own:** once scroll passes the wrapper's
+full height, the sticky panel's containing block scrolls out from under
+it, and `position: sticky` just... stops being sticky. No manual "unpin"
+logic needed. Content is already fully transparent by that point (see
+the 97–100% blank tail above), so there's nothing to visually jar when
+it happens.
 
-**Pain-point ticker.** New section, directly below the hero. A continuous
-horizontal scroll of short lines describing problems your prospects
-actually have — "Team buried in low-value tasks," "Revenue flat despite
-more hours worked," and so on. This is the Subduxion-style element from
-the design doc, built generically for now. When you send the specific
-intro details next chat, this is the piece we'll refine or replace.
+**"See How It Works" skips it entirely.** That button still anchors
+straight to `#phases`. There's no `scroll-behavior: smooth` set anywhere
+in the project, so it's a hard, instant jump — it never scrolls *through*
+this section's progress range, it just teleports past it.
 
-**Aspirations strip.** The five "we help you achieve" bullets that used to
-be a tall vertical list inside the hero are now a compact single-line
-icon row right below the ticker. Same content, way less vertical weight.
+**The old pain-point ticker and standalone aspirations strip are both
+gone from the page now** — their content lives inside this new sequence
+instead. The `Marquee.tsx` component file is still sitting untouched in
+the codebase if you ever want a horizontal ticker again elsewhere.
 
-**Credential bar.** A slim strip naming Ethan's BCG/Innosight background
-with small logo chips, sitting right after the aspirations strip. This is
-the "move credibility up" fix from the design doc audit; the full Meet
-Ethan section with his complete bio still lives further down the page for
-anyone who wants the full story.
+---
 
-**Three phases.** This is the biggest structural change. The old layout
-was three tall stacked sections alternating a stock photo left/right. That
-had two problems: stock photos undercut credibility, and the stacked
-format doesn't let a visitor compare all three phases at once. The new
-version is a three-card grid, connected by small arrow icons between them
-to reinforce that this is a sequence. Each card has an icon (not a stock
-photo), a gradient top-rule, the phase number, the guarantee line, and
-the bullet list. This is the bento-style pattern from the design doc,
-adapted to make sense for three sequential items rather than an
-asymmetric grid.
+## Hero changes
 
-I dropped the phase stock images entirely rather than swapping them for
-different stock images. The design doc audit specifically called these
-out as hurting credibility, and there's no real photography to replace
-them with yet. Icons carry the same visual weight without that problem.
-When real photos or a data point becomes available, they're easy to work
-back in.
+- **"Evolution" is no longer italic.** Still in the bright gradient, just
+  upright now.
+- **The two background glow blobs are gone.** No more gradient wash
+  behind the hero content.
+- **New: a thin glowing horizon line along the very bottom edge.** A 1px
+  line, soft white, faded at both ends, with just enough box-shadow blur
+  to read as "glowing" without being loud. It's a quiet visual cue that
+  there's more below, not a decoration competing for attention.
+- **Subhead trimmed.** It was carrying a lot of the "problem → solution"
+  narrative that the interactive scroll now owns. Cut down to a single
+  line naming what you do, since the scroll sequence right after it now
+  handles the fuller story.
+- Everything else in the hero (headline, CTAs, the Evolvance definition
+  card) is unchanged.
 
-**Meet Ethan.** Same bio and credentials, tightened typography, smaller
-and less ornamented photo treatment (dropped the heavy shadow and thick
-border), matching the calmer overall style.
+**Still waiting on you:** you mentioned images are coming for the hero
+soon. I didn't add a placeholder image slot since we've been avoiding
+stock photography on purpose throughout this whole rebuild — once you
+send real images, that's a quick follow-up to slot them in properly
+rather than guessing at layout now and rebuilding it later.
 
-**Final CTA band.** New. A single full-width navy section with one line
-and one button, right before the footer. Previously the only closing
-moment was whatever came after the Meet Ethan section, which wasn't
-really a CTA.
+---
 
-## Header — now scroll-aware
+## The bento skills board
 
-The header starts transparent and overlays the hero (or, on interior
-pages, the new PageHeader band — see below) directly. Once you scroll
-about 32px, it picks up a solid navy background with a blur and border.
-This works because every page now opens with a navy section at the top,
-so the transparent header always has a dark background to sit on
-regardless of which page you're on.
+New component: `SkillsBento.tsx`, placed right after the three-phase
+section and before Meet Ethan. Seven tiles in a bento grid — one large
+anchor tile ("Workflow Automation") spanning 2×2, with the rest arranged
+around it at different widths so it doesn't read as a flat, repetitive
+grid:
 
-Also reduced from 144px tall to 64/80px (mobile/desktop), with a
-proportionally smaller logo. The old size was eating a huge chunk of the
-viewport before any content appeared.
+Workflow Automation (anchor), Client Callback & Follow-Up, Lead
+Generation, AI Training & Upskilling, Data & Reporting, Systems
+Integration, Process Documentation.
 
-## New: PageHeader component
+I picked these seven based on what's already implied elsewhere in your
+copy (call analytics, automated workflows, AI training all show up in
+the phase bullets already) plus a few adjacent, defensible categories
+(CRM integration, documentation) that round out "everything else" without
+inventing services that aren't grounded in anything on the site already.
+If any of these don't match what you actually offer, they're just array
+entries — easy to swap, rename, or add to.
 
-Contact, Podcast, and Book a Call now each open with a slim navy band
-(overline + heading + short subtext) before the page continues in cream.
-Previously these pages just started directly in cream with no equivalent
-opening beat to the homepage hero. Now every page in the site opens the
-same way, which is a big part of what makes a site feel like one designed
-system instead of a stack of separately-built screens.
+Same visual language as the phase cards: plain card, gradient top-rule,
+icon chip, no stock photography.
 
-## Cards, buttons, glow — consistency pass carried over
+---
 
-Same fixes as the first round, still true here: one plain card treatment
-site-wide instead of translucent glass everywhere, gradient text pulled
-back to the hero and actual brand-name mentions instead of on every
-heading, the pulse-glow animation limited to primary CTAs instead of
-every button, button typography fixed once in the component instead of
-overridden per instance.
+## Placement, start to finish
 
-## Copy
-
-Two em dashes removed from the homepage bio and definition-box copy
-(brand guidelines ban these). No other copy was rewritten except the hero
-headline, which is explained above.
-
-## Worth knowing before you show Ethan this
-
-- **The pain-point ticker and hero glow are placeholder-quality builds
-  of a Subduxion-inspired pattern**, not the specific "cool intro" you
-  mentioned. Once you send the details, that section gets refined or
-  replaced.
-- **No fake client logos or made-up stats anywhere.** The design doc
-  flagged that real client metrics and logos are still an open item with
-  Ethan. Nothing here fabricates either.
-- **Large image files are still large.** `ethan-headshot.png` is 2.7MB,
-  `egp-logo-transparent.png` is 620KB. Not a styling issue, but worth
-  compressing before this goes live, they'll slow the site down.
+Hero (full screen) → Interactive Scroll (pain points → solution) →
+Credential Bar → Three Phases → **Bento Skills Board (new)** → Meet Ethan
+→ Final CTA Band.

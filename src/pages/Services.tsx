@@ -2,18 +2,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import IntroSplash from "@/components/IntroSplash";
-import {
-  TrendingUp,
-  Users,
-  Zap,
-  Gauge,
-  RefreshCw,
-  ArrowRight,
-  CheckCircle2,
-  LineChart,
-  Workflow,
-  Sparkles,
-} from "lucide-react";
+import InteractiveScroll from "@/components/InteractiveScroll";
+import SkillsBento from "@/components/SkillsBento";
+import { ArrowRight, CheckCircle2, LineChart, Workflow, Sparkles } from "lucide-react";
 import ethanHeadshot from "@/assets/ethan-headshot.png";
 import bcgLogo from "@/assets/bcg-logo.png";
 import innosightLogo from "@/assets/innosight-logo.jpeg";
@@ -25,14 +16,6 @@ const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
-
-const aspirations = [
-  { icon: TrendingUp, label: "Increasing new-client leads" },
-  { icon: Users, label: "Enhancing client conversion rates" },
-  { icon: Zap, label: "Freeing team capacity" },
-  { icon: Gauge, label: "Improving task execution speed" },
-  { icon: RefreshCw, label: "Continuous process improvement" },
-];
 
 const credentials = [
   { logo: bcgLogo, label: "Boston Consulting Group" },
@@ -89,17 +72,6 @@ const Services = () => {
 
       {/* ============ HERO — dark navy impact surface, full viewport ============ */}
       <section className="relative overflow-hidden bg-shell min-h-screen flex items-center pt-20 md:pt-24 pb-16">
-        {/* Abstract glow, not a stock photo — keeps the surface quiet and lets
-            the typography and gradient do the work. */}
-        <div
-          className="pointer-events-none absolute -top-40 -right-40 h-[32rem] w-[32rem] rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsla(193,99%,50%,0.35), transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full opacity-30 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsla(150,70%,55%,0.28), transparent 70%)" }}
-        />
-
         <div className="container relative mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -111,12 +83,10 @@ const Services = () => {
               AI-Powered Growth for Small &amp; Medium Businesses
             </p>
             <h1 className="font-display text-display font-extrabold leading-[1.02] tracking-tight text-shell-foreground">
-              Empower Your Growth{" "}
-              <span className="italic gradient-text-bright">Evolution</span>
+              Empower Your Growth <span className="gradient-text-bright">Evolution</span>
             </h1>
             <p className="mt-6 text-body-lg font-body text-shell-muted leading-relaxed max-w-lg">
-              We partner with SMBs to grow revenue, reclaim time, and own their AI transformation,
-              guaranteed or we work for free.
+              AI-powered growth systems for small and medium businesses.
             </p>
 
             <div className="mt-9 flex flex-col sm:flex-row gap-3">
@@ -149,21 +119,19 @@ const Services = () => {
             </div>
           </motion.div>
         </div>
+
+        {/* Soft glowing horizon line — a quiet scroll indicator, not a
+            decorative gradient wash. Sits right at the bottom edge. */}
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)",
+            boxShadow: "0 0 12px 1px rgba(255,255,255,0.25)",
+          }}
+        />
       </section>
 
-      {/* ============ ASPIRATIONS STRIP ============ */}
-      <section className="bg-background py-10 border-b border-border">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-            {aspirations.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2.5">
-                <Icon className="h-4 w-4 text-deep-azure shrink-0" />
-                <span className="text-caption font-body font-medium text-foreground/80">{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <InteractiveScroll />
 
       {/* ============ CREDENTIAL BAR ============ */}
       <section className="bg-secondary/30 py-8 border-b border-border">
@@ -260,6 +228,8 @@ const Services = () => {
           </div>
         </div>
       </section>
+
+      <SkillsBento />
 
       {/* ============ MEET ETHAN ============ */}
       <section className="py-20 md:py-28 bg-secondary/30 border-y border-border">
