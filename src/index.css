@@ -166,21 +166,83 @@
   mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
-/* Glitch — a periodic, brief stutter rather than constant jitter. Runs on
-   a long loop (4s) so each card only "glitches" for a fraction of a
-   second every few seconds, which reads as an intentional unstable/error
-   quality instead of a distracting constant wobble. Works regardless of
-   scroll direction since it's a plain always-on CSS loop, not tied to a
-   one-shot scroll-triggered event. */
-@keyframes glitch {
-  0%, 92%, 100% { transform: translate(0, 0); opacity: 1; }
-  93% { transform: translate(-2px, 1px); opacity: 0.7; }
-  94% { transform: translate(2px, -1px); opacity: 1; }
-  95% { transform: translate(-1px, 0); opacity: 0.8; }
-  96% { transform: translate(1px, 1px); opacity: 1; }
-  97% { transform: translate(0, -1px); opacity: 0.9; }
-  98% { transform: translate(0, 0); opacity: 1; }
+/* ------------------------------------------------------------------ */
+/* Header legibility fix                                               */
+/* ------------------------------------------------------------------ */
+/* WHY this exists: the header floats transparent over whatever section
+   happens to be at the top of a page. A translucent scrim alone can't
+   *guarantee* contrast — do the math: even a fairly strong 70%-opacity
+   dark scrim over a pure-white section only nets a contrast ratio of
+   roughly 2.8:1 for white text, well under the 4.5:1 a 14px nav label
+   needs. A soft drop-shadow behind the glyphs fixes that regardless of
+   what color is behind it, because it paints a dark halo directly around
+   each letterform rather than relying on the backdrop's average color.
+   This is the actual legibility guarantee; the scrim (in Header.tsx) is
+   just the atmospheric "veil" look layered on top of it. */
+.header-text-shadow {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.4);
 }
-.animate-glitch {
-  animation: glitch 4s linear infinite;
+
+/* ------------------------------------------------------------------ */
+/* Digital glitch burst (InteractiveScroll pain-point cards)            */
+/* ------------------------------------------------------------------ */
+/* WHY CSS keyframes here instead of pure GSAP: this is a short, fixed-
+   length burst (not something that needs to scrub with scroll position),
+   so a plain keyframe animation is simpler and cheaper than tweening every
+   property by hand. GSAP (in InteractiveScroll.tsx) only toggles the
+   `.is-glitching` class on and off at the right scroll moment; the class
+   is what actually plays this animation.
+
+   HOW the "glitch" reads as a glitch and not a wobble: two duplicate
+   layers are sliced out of horizontal bands of the card (via clip-path),
+   tinted with a color-channel fringe, and knocked sideways for a couple of
+   quick, uneven jumps before disappearing — mimicking a corrupted video
+   signal's "tearing" rather than the card itself moving. The real card
+   content never moves more than a pixel or two; the illusion of a glitch
+   comes entirely from these two sliced ghost layers. */
+.glitch-card {
+  position: relative;
+}
+.glitch-card.is-glitching::before,
+.glitch-card.is-glitching::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.glitch-card.is-glitching::before {
+  clip-path: inset(8% 0 58% 0);
+  background-color: hsla(193, 90%, 60%, 0.45);
+  animation: glitch-slice-a 0.36s steps(1, jump-none);
+}
+.glitch-card.is-glitching::after {
+  clip-path: inset(55% 0 12% 0);
+  background-color: hsla(350, 80%, 60%, 0.35);
+  animation: glitch-slice-b 0.36s steps(1, jump-none);
+}
+@keyframes glitch-slice-a {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  12% { transform: translate3d(-7px, 1px, 0); opacity: 1; }
+  24% { transform: translate3d(5px, 0, 0); opacity: 0; }
+  38% { transform: translate3d(-4px, -1px, 0); opacity: 0.9; }
+  50% { transform: translate3d(0, 0, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+@keyframes glitch-slice-b {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  16% { transform: translate3d(6px, -1px, 0); opacity: 0.9; }
+  30% { transform: translate3d(-5px, 0, 0); opacity: 0; }
+  44% { transform: translate3d(3px, 1px, 0); opacity: 0.8; }
+  58% { transform: translate3d(0, 0, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glitch-card.is-glitching::before,
+  .glitch-card.is-glitching::after {
+    animation: none;
+    display: none;
+  }
 }

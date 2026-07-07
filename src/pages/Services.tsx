@@ -1,7 +1,11 @@
+import { useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import IntroSplash from "@/components/IntroSplash";
+import HeroBackdrop from "@/components/HeroBackdrop";
 import InteractiveScroll from "@/components/InteractiveScroll";
 import SkillsBento from "@/components/SkillsBento";
 import { ArrowRight, CheckCircle2, LineChart, Workflow, Sparkles } from "lucide-react";
@@ -11,6 +15,12 @@ import innosightLogo from "@/assets/innosight-logo.jpeg";
 import dmvLogo from "@/assets/dmvkicksupply-logo.jpeg";
 import uncLogo from "@/assets/unc-logo.avif";
 import linkedinIcon from "@/assets/linkedin-icon.png";
+
+// Registered here too (not just in InteractiveScroll.tsx) so this file
+// doesn't silently depend on another module happening to import first —
+// gsap.registerPlugin() is idempotent, so calling it again is a no-op if
+// InteractiveScroll's module already ran.
+gsap.registerPlugin(ScrollTrigger);
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -24,78 +34,146 @@ const credentials = [
   { logo: uncLogo, label: "UNC Chapel Hill, Business & Econ" },
 ];
 
+// The three hero outcomes deliberately preview the three phases below in
+// the same order (revenue -> operations -> ownership) — a structural echo
+// rather than three unrelated taglines, so the hero quietly sets up the
+// page's own roadmap before the reader gets there.
+const outcomes = ["More revenue, faster", "Leaner, faster operations", "AI your team owns"];
+
 const phases = [
   {
-    n: "phase 01",
+    n: "Phase 01",
     icon: LineChart,
-    title: "revenue growth",
-    guarantee: "guaranteed revenue growth from lead and conversion increases, or we work for free.",
+    title: "Revenue Growth",
+    guarantee: "Guaranteed revenue growth from lead and conversion increases, or we work for free.",
     bullets: [
-      { h: "identifying priority clients", d: "Pinpoint the highest-value segments worth your team's time." },
-      { h: "high-converting offers", d: "Sharpen your positioning so prospects say yes faster." },
-      { h: "client acquisition systems", d: "AI-driven outbound, inbound, and nurture engines." },
-      { h: "sales intelligence", d: "Call analytics and follow-up automation that close deals." },
+      { h: "Identifying Priority Clients", d: "Pinpoint the highest-value segments worth your team's time." },
+      { h: "High-Converting Offers", d: "Sharpen your positioning so prospects say yes faster." },
+      { h: "Client Acquisition Systems", d: "AI-driven outbound, inbound, and nurture engines." },
+      { h: "Sales Intelligence", d: "Call analytics and follow-up automation that close deals." },
     ],
   },
   {
-    n: "phase 02",
+    n: "Phase 02",
     icon: Workflow,
-    title: "operations growth",
-    guarantee: "guaranteed bottom-line growth through operational effectiveness, or we work for free.",
+    title: "Operations Growth",
+    guarantee: "Guaranteed bottom-line growth through operational effectiveness, or we work for free.",
     bullets: [
-      { h: "opportunity prioritization", d: "Map every workflow and target the highest-leverage automations." },
-      { h: "automated workflows", d: "Replace manual busywork with reliable, AI-powered systems." },
-      { h: "implementation & upskilling", d: "Roll out the tools and train your team to run them." },
+      { h: "Opportunity Prioritization", d: "Map every workflow and target the highest-leverage automations." },
+      { h: "Automated Workflows", d: "Replace manual busywork with reliable, AI-powered systems." },
+      { h: "Implementation & Upskilling", d: "Roll out the tools and train your team to run them." },
     ],
   },
   {
-    n: "phase 03",
+    n: "Phase 03",
     icon: Sparkles,
-    title: "evolution ownership",
+    title: "Evolution Ownership",
     guarantee: (
       <>
-        guaranteed full <span className="font-semibold not-italic lowercase">evolvance</span>, or we work for free.
+        Guaranteed full <span className="font-semibold not-italic">Evolvance</span>, or we work for free.
       </>
     ),
     bullets: [
-      { h: "holistic training", d: "Give every team member the AI fluency to keep evolving without us." },
-      { h: "ai governance", d: "Guardrails and review cycles that keep AI safe and effective." },
-      { h: "continuous evolution program", d: "A repeatable cadence to identify and ship the next improvement." },
+      { h: "Holistic Training", d: "Give every team member the AI fluency to keep evolving without us." },
+      { h: "AI Governance", d: "Guardrails and review cycles that keep AI safe and effective." },
+      { h: "Continuous Evolution Program", d: "A repeatable cadence to identify and ship the next improvement." },
     ],
   },
 ];
 
 const Services = () => {
+  const heroRef = useRef<HTMLElement>(null);
+  const horizonRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Horizon-line reactivity: the line starts noticeably brighter at rest
+   * than the old barely-there version, then intensifies further as the
+   * user scrolls through the hero.
+   *
+   * WHY animate `opacity` + `filter: brightness()` instead of re-computing
+   * the box-shadow blur radius every frame: box-shadow strings are
+   * expensive for the browser to repaint at 60fps (it has to recompute
+   * the blur), while opacity/filter are cheap, GPU-composited properties.
+   * The line's box-shadow is set once, statically, in the JSX below, and
+   * scrubbing brightness/opacity on top of that fakes an intensifying glow
+   * for a fraction of the cost.
+   */
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(horizonRef.current, { opacity: 0.75, filter: "brightness(1)" });
+      gsap.to(horizonRef.current, {
+        opacity: 1,
+        filter: "brightness(1.9)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.4,
+        },
+      });
+    }, heroRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="min-h-screen">
       <IntroSplash />
 
       {/* ============ HERO — dark navy impact surface, full viewport ============ */}
-      <section className="relative overflow-hidden bg-shell min-h-screen flex items-center pt-20 md:pt-24 pb-16">
-        <div className="container relative mx-auto px-6">
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden bg-shell min-h-screen flex items-center pt-20 md:pt-24 pb-16"
+      >
+        {/* Cursor-reactive contour backdrop — see HeroBackdrop.tsx for why
+            this replaces the old static radial-glow/grid/scan-beam stack:
+            those were closer to the generic "AI visual" look the brief
+            asked to avoid, and weren't actually interactive. */}
+        <HeroBackdrop />
+
+        <div className="container relative z-10 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-2xl"
+            className="mx-auto max-w-3xl text-center"
           >
-            <p className="text-overline text-primary mb-5 lowercase">
-              ai-powered growth for small &amp; medium businesses
-            </p>
-            <h1 className="font-display text-display font-extrabold leading-[1.02] tracking-tight text-shell-foreground lowercase">
-              empower your growth <span className="gradient-text-bright">evolution</span>
-            </h1>
-            <p className="mt-6 text-body-lg font-body text-shell-muted leading-relaxed max-w-lg lowercase">
-              ai-powered growth systems for small and medium businesses.
+            <p className="text-overline text-primary mb-5">
+              AI-Powered Growth for Small &amp; Medium Businesses
             </p>
 
-            <div className="mt-9 flex flex-col sm:flex-row gap-3">
+            {/* Tightened, sentence-weight headline — medium size/weight
+                rather than the old oversized/extrabold display treatment,
+                closer to how Launch/Subduxion pitch theirs, while keeping
+                the first-person "We partner with..." voice that's specific
+                to Evolvance rather than copying either reference verbatim. */}
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.2] tracking-tight text-shell-foreground">
+              We partner with small and medium businesses to power{" "}
+              <span className="gradient-text-bright">growth evolution</span> through AI.
+            </h1>
+
+            {/* Three biggest client outcomes — horizontal, minimal vertical
+                space, smaller/medium weight than the headline. divide-x
+                draws the separators for free (skips the first child
+                automatically) instead of hand-rolling divider dots. */}
+            <div className="mt-7 flex flex-wrap items-center justify-center divide-x divide-shell-border">
+              {outcomes.map((o) => (
+                <span
+                  key={o}
+                  className="px-4 md:px-6 first:pl-0 last:pr-0 font-body text-sm md:text-base font-medium text-shell-muted"
+                >
+                  {o}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
               <Link to="/book">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6 lowercase"
+                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6 animate-pulse-glow"
                 >
-                  book a discovery call
+                  Book a Discovery Call
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
@@ -103,31 +181,27 @@ const Services = () => {
                 <Button
                   size="lg"
                   variant="ghost"
-                  className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6 lowercase"
+                  className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6"
                 >
-                  see how it works
+                  See How It Works
                 </Button>
               </a>
-            </div>
-
-            <div className="mt-10 border border-shell-border bg-shell-foreground/[0.04] rounded-xl px-5 py-4 max-w-md">
-              <p className="text-body font-body text-shell-muted leading-relaxed">
-                <span className="font-display font-extrabold gradient-text-bright lowercase">evolvance</span>{" "}
-                <span className="italic text-shell-muted/70">(n.):</span> an evolved state where
-                advancement is continuous.
-              </p>
             </div>
           </motion.div>
         </div>
 
-        {/* Soft glowing horizon line — a quiet scroll indicator. More
-            present than a hairline, still faded at both ends so it reads
-            as ambient glow rather than a hard rule across the screen. */}
+        {/* Glowing horizon line — a reactive scroll indicator, not a
+            static decorative wash. Noticeably brighter at rest than
+            before, and intensifies further via the scroll-linked effect
+            set up in the useLayoutEffect above. Uses the brand's own azure
+            glow color (the same one CTA buttons pulse with) instead of
+            plain white, so it reads as an intentional brand detail. */}
         <div
-          className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px]"
+          ref={horizonRef}
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.75) 50%, transparent 100%)",
-            boxShadow: "0 0 24px 3px rgba(255,255,255,0.45)",
+            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.85) 50%, transparent 100%)",
+            boxShadow: "0 0 22px 2px hsla(193,99%,55%,0.5)",
           }}
         />
       </section>
@@ -139,7 +213,7 @@ const Services = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10">
             <p className="text-caption font-body text-muted-foreground text-center md:text-left shrink-0">
-              led by a former BCG &amp; Innosight consultant
+              Led by a former BCG &amp; Innosight consultant
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               {credentials.map((c) => (
@@ -155,7 +229,13 @@ const Services = () => {
         </div>
       </section>
 
-      {/* ============ THREE PHASES — card grid ============ */}
+      {/* ============ THREE PHASES — vertical spine timeline ============
+          Changed from a 3-up horizontal grid to a stacked vertical path:
+          each phase's icon sits in a circle on a connecting spine, with
+          content to its right. No per-card gradient bars (removed per the
+          brief); the spine itself is a single flat brand-tinted color, not
+          a gradient, so the "remove gradient accents" instruction holds
+          for the whole section, not just the old top-bar detail. */}
       <section id="phases" className="py-20 md:py-28">
         <div className="container mx-auto px-6">
           <motion.div
@@ -163,58 +243,51 @@ const Services = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="text-center max-w-2xl mx-auto mb-14 md:mb-16"
+            className="text-center max-w-2xl mx-auto mb-14 md:mb-20"
           >
-            <p className="text-overline text-deep-azure mb-3 lowercase">the evolvance partnership model</p>
-            <h2 className="font-body text-h1 font-bold leading-tight lowercase">
-              a three-phase pathway to owning your growth evolution
+            <p className="text-overline text-deep-azure mb-3">The Evolvance Partnership Model</p>
+            <h2 className="font-body text-h1 font-bold leading-tight">
+              A three-phase pathway to owning your growth evolution
             </h2>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-3 relative">
+          <div className="mx-auto max-w-3xl">
             {phases.map((phase, idx) => {
               const Icon = phase.icon;
+              const isLast = idx === phases.length - 1;
               return (
                 <motion.div
                   key={phase.title}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
+                  viewport={{ once: true, amount: 0.3 }}
                   variants={fadeUp}
                   transition={{ delay: idx * 0.1 }}
-                  className="relative"
+                  className="relative flex gap-6 md:gap-10"
                 >
-                  {/* connector arrow between cards on desktop */}
-                  {idx < phases.length - 1 && (
-                    <div className="hidden md:flex absolute top-1/2 -right-3 -translate-y-1/2 z-10 h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
-                      <ArrowRight className="h-3 w-3 text-deep-azure" />
+                  {/* Numeral/spine column */}
+                  <div className="flex flex-col items-center shrink-0">
+                    <div className="flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-pale-azure shrink-0">
+                      <Icon className="h-6 w-6 md:h-7 md:w-7 text-deep-azure" />
                     </div>
-                  )}
+                    {!isLast && <div className="mt-2 w-px flex-1 bg-primary/20" />}
+                  </div>
 
-                  <div className="plain-card h-full p-6 md:p-7 flex flex-col overflow-hidden relative">
-                    <div
-                      className="absolute top-0 left-0 right-0 h-1"
-                      style={{ background: "linear-gradient(90deg, #016B88, #129094, #26BB70)" }}
-                    />
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="h-10 w-10 rounded-lg bg-pale-azure flex items-center justify-center shrink-0">
-                        <Icon className="h-5 w-5 text-deep-azure" />
-                      </div>
-                      <p className="text-overline text-deep-azure lowercase">{phase.n}</p>
+                  {/* Content column */}
+                  <div className={`flex-1 min-w-0 ${isLast ? "pb-0" : "pb-14 md:pb-20"}`}>
+                    <p className="text-overline text-deep-azure mb-2">{phase.n}</p>
+                    <h3 className="font-body text-h2 font-bold leading-tight">{phase.title}</h3>
+
+                    <div className="mt-4 rounded-lg border-l-4 border-primary bg-pale-azure px-3.5 py-2.5 max-w-xl">
+                      <p className="text-caption font-body italic text-foreground/85">{phase.guarantee}</p>
                     </div>
 
-                    <h3 className="font-body text-h2 font-bold leading-tight lowercase">{phase.title}</h3>
-
-                    <div className="mt-4 rounded-lg border-l-4 border-primary bg-pale-azure px-3.5 py-2.5">
-                      <p className="text-caption font-body italic text-foreground/85 lowercase">{phase.guarantee}</p>
-                    </div>
-
-                    <ul className="mt-5 space-y-3.5 flex-1">
+                    <ul className="mt-5 space-y-3.5 max-w-xl">
                       {phase.bullets.map((b) => (
                         <li key={b.h} className="flex gap-2.5">
                           <CheckCircle2 className="h-4 w-4 text-deep-azure mt-0.5 shrink-0" />
                           <div>
-                            <p className="font-body font-semibold text-body leading-snug lowercase">{b.h}</p>
+                            <p className="font-body font-semibold text-body leading-snug">{b.h}</p>
                             <p className="mt-0.5 text-caption font-body text-muted-foreground leading-relaxed">
                               {b.d}
                             </p>
@@ -250,7 +323,7 @@ const Services = () => {
               />
             </div>
             <div className="flex-1 max-w-2xl">
-              <p className="text-overline text-deep-azure mb-2 lowercase">meet the founder</p>
+              <p className="text-overline text-deep-azure mb-2">Meet the Founder</p>
               <h2 className="font-body text-h1 font-bold leading-tight">Ethan Schroeher</h2>
               <p className="mt-1 font-body text-body-lg font-semibold text-deep-azure">CEO &amp; Founder</p>
               <p className="mt-5 text-foreground/85 font-body leading-relaxed text-body">
@@ -296,13 +369,13 @@ const Services = () => {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto lowercase">
-              ready to grow? we'll build your{" "}
-              <span className="gradient-text-bright">evolvance growth plan</span>, free.
+            <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto">
+              Ready to grow? We'll build your{" "}
+              <span className="gradient-text-bright">Evolvance Growth Plan</span>, free.
             </h2>
             <Link to="/book" className="mt-8 inline-block">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 lowercase">
-                book a discovery call
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6">
+                Book a Discovery Call
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
