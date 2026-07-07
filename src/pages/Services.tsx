@@ -26,41 +26,41 @@ const credentials = [
 
 const phases = [
   {
-    n: "Phase 01",
+    n: "phase 01",
     icon: LineChart,
-    title: "Revenue Growth",
-    guarantee: "Guaranteed revenue growth from lead and conversion increases, or we work for free.",
+    title: "revenue growth",
+    guarantee: "guaranteed revenue growth from lead and conversion increases, or we work for free.",
     bullets: [
-      { h: "Identifying Priority Clients", d: "Pinpoint the highest-value segments worth your team's time." },
-      { h: "High-Converting Offers", d: "Sharpen your positioning so prospects say yes faster." },
-      { h: "Client Acquisition Systems", d: "AI-driven outbound, inbound, and nurture engines." },
-      { h: "Sales Intelligence", d: "Call analytics and follow-up automation that close deals." },
+      { h: "identifying priority clients", d: "Pinpoint the highest-value segments worth your team's time." },
+      { h: "high-converting offers", d: "Sharpen your positioning so prospects say yes faster." },
+      { h: "client acquisition systems", d: "AI-driven outbound, inbound, and nurture engines." },
+      { h: "sales intelligence", d: "Call analytics and follow-up automation that close deals." },
     ],
   },
   {
-    n: "Phase 02",
+    n: "phase 02",
     icon: Workflow,
-    title: "Operations Growth",
-    guarantee: "Guaranteed bottom-line growth through operational effectiveness, or we work for free.",
+    title: "operations growth",
+    guarantee: "guaranteed bottom-line growth through operational effectiveness, or we work for free.",
     bullets: [
-      { h: "Opportunity Prioritization", d: "Map every workflow and target the highest-leverage automations." },
-      { h: "Automated Workflows", d: "Replace manual busywork with reliable, AI-powered systems." },
-      { h: "Implementation & Upskilling", d: "Roll out the tools and train your team to run them." },
+      { h: "opportunity prioritization", d: "Map every workflow and target the highest-leverage automations." },
+      { h: "automated workflows", d: "Replace manual busywork with reliable, AI-powered systems." },
+      { h: "implementation & upskilling", d: "Roll out the tools and train your team to run them." },
     ],
   },
   {
-    n: "Phase 03",
+    n: "phase 03",
     icon: Sparkles,
-    title: "Evolution Ownership",
+    title: "evolution ownership",
     guarantee: (
       <>
-        Guaranteed full <span className="font-semibold not-italic">Evolvance</span>, or we work for free.
+        guaranteed full <span className="font-semibold not-italic lowercase">evolvance</span>, or we work for free.
       </>
     ),
     bullets: [
-      { h: "Holistic Training", d: "Give every team member the AI fluency to keep evolving without us." },
-      { h: "AI Governance", d: "Guardrails and review cycles that keep AI safe and effective." },
-      { h: "Continuous Evolution Program", d: "A repeatable cadence to identify and ship the next improvement." },
+      { h: "holistic training", d: "Give every team member the AI fluency to keep evolving without us." },
+      { h: "ai governance", d: "Guardrails and review cycles that keep AI safe and effective." },
+      { h: "continuous evolution program", d: "A repeatable cadence to identify and ship the next improvement." },
     ],
   },
 ];
@@ -79,23 +79,23 @@ const Services = () => {
             transition={{ duration: 0.7 }}
             className="max-w-2xl"
           >
-            <p className="text-overline text-primary mb-5">
-              AI-Powered Growth for Small &amp; Medium Businesses
+            <p className="text-overline text-primary mb-5 lowercase">
+              ai-powered growth for small &amp; medium businesses
             </p>
-            <h1 className="font-display text-display font-extrabold leading-[1.02] tracking-tight text-shell-foreground">
-              Empower Your Growth <span className="gradient-text-bright">Evolution</span>
+            <h1 className="font-display text-display font-extrabold leading-[1.02] tracking-tight text-shell-foreground lowercase">
+              empower your growth <span className="gradient-text-bright">evolution</span>
             </h1>
-            <p className="mt-6 text-body-lg font-body text-shell-muted leading-relaxed max-w-lg">
-              AI-powered growth systems for small and medium businesses.
+            <p className="mt-6 text-body-lg font-body text-shell-muted leading-relaxed max-w-lg lowercase">
+              ai-powered growth systems for small and medium businesses.
             </p>
 
             <div className="mt-9 flex flex-col sm:flex-row gap-3">
               <Link to="/book">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6 animate-pulse-glow"
+                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6 lowercase"
                 >
-                  Book a Discovery Call
+                  book a discovery call
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
@@ -103,30 +103,31 @@ const Services = () => {
                 <Button
                   size="lg"
                   variant="ghost"
-                  className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6"
+                  className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6 lowercase"
                 >
-                  See How It Works
+                  see how it works
                 </Button>
               </a>
             </div>
 
-            <div className="mt-10 glass-card rounded-xl px-5 py-4 max-w-md">
-              <p className="text-body font-body text-foreground/90 leading-relaxed">
-                <span className="font-display font-extrabold gradient-text">Evolvance</span>{" "}
-                <span className="italic text-muted-foreground">(n.):</span> An evolved state where
+            <div className="mt-10 border border-shell-border bg-shell-foreground/[0.04] rounded-xl px-5 py-4 max-w-md">
+              <p className="text-body font-body text-shell-muted leading-relaxed">
+                <span className="font-display font-extrabold gradient-text-bright lowercase">evolvance</span>{" "}
+                <span className="italic text-shell-muted/70">(n.):</span> an evolved state where
                 advancement is continuous.
               </p>
             </div>
           </motion.div>
         </div>
 
-        {/* Soft glowing horizon line — a quiet scroll indicator, not a
-            decorative gradient wash. Sits right at the bottom edge. */}
+        {/* Soft glowing horizon line — a quiet scroll indicator. More
+            present than a hairline, still faded at both ends so it reads
+            as ambient glow rather than a hard rule across the screen. */}
         <div
-          className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px]"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)",
-            boxShadow: "0 0 12px 1px rgba(255,255,255,0.25)",
+            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.75) 50%, transparent 100%)",
+            boxShadow: "0 0 24px 3px rgba(255,255,255,0.45)",
           }}
         />
       </section>
@@ -138,7 +139,7 @@ const Services = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10">
             <p className="text-caption font-body text-muted-foreground text-center md:text-left shrink-0">
-              Led by a former BCG &amp; Innosight consultant
+              led by a former BCG &amp; Innosight consultant
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               {credentials.map((c) => (
@@ -164,9 +165,9 @@ const Services = () => {
             variants={fadeUp}
             className="text-center max-w-2xl mx-auto mb-14 md:mb-16"
           >
-            <p className="text-overline text-deep-azure mb-3">The Evolvance Partnership Model</p>
-            <h2 className="font-body text-h1 font-bold leading-tight">
-              A three-phase pathway to owning your growth evolution
+            <p className="text-overline text-deep-azure mb-3 lowercase">the evolvance partnership model</p>
+            <h2 className="font-body text-h1 font-bold leading-tight lowercase">
+              a three-phase pathway to owning your growth evolution
             </h2>
           </motion.div>
 
@@ -199,13 +200,13 @@ const Services = () => {
                       <div className="h-10 w-10 rounded-lg bg-pale-azure flex items-center justify-center shrink-0">
                         <Icon className="h-5 w-5 text-deep-azure" />
                       </div>
-                      <p className="text-overline text-deep-azure">{phase.n}</p>
+                      <p className="text-overline text-deep-azure lowercase">{phase.n}</p>
                     </div>
 
-                    <h3 className="font-body text-h2 font-bold leading-tight">{phase.title}</h3>
+                    <h3 className="font-body text-h2 font-bold leading-tight lowercase">{phase.title}</h3>
 
                     <div className="mt-4 rounded-lg border-l-4 border-primary bg-pale-azure px-3.5 py-2.5">
-                      <p className="text-caption font-body italic text-foreground/85">{phase.guarantee}</p>
+                      <p className="text-caption font-body italic text-foreground/85 lowercase">{phase.guarantee}</p>
                     </div>
 
                     <ul className="mt-5 space-y-3.5 flex-1">
@@ -213,7 +214,7 @@ const Services = () => {
                         <li key={b.h} className="flex gap-2.5">
                           <CheckCircle2 className="h-4 w-4 text-deep-azure mt-0.5 shrink-0" />
                           <div>
-                            <p className="font-body font-semibold text-body leading-snug">{b.h}</p>
+                            <p className="font-body font-semibold text-body leading-snug lowercase">{b.h}</p>
                             <p className="mt-0.5 text-caption font-body text-muted-foreground leading-relaxed">
                               {b.d}
                             </p>
@@ -249,7 +250,7 @@ const Services = () => {
               />
             </div>
             <div className="flex-1 max-w-2xl">
-              <p className="text-overline text-deep-azure mb-2">Meet the Founder</p>
+              <p className="text-overline text-deep-azure mb-2 lowercase">meet the founder</p>
               <h2 className="font-body text-h1 font-bold leading-tight">Ethan Schroeher</h2>
               <p className="mt-1 font-body text-body-lg font-semibold text-deep-azure">CEO &amp; Founder</p>
               <p className="mt-5 text-foreground/85 font-body leading-relaxed text-body">
@@ -295,13 +296,13 @@ const Services = () => {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto">
-              Ready to grow? We'll build your{" "}
-              <span className="gradient-text-bright">Evolvance Growth Plan</span>, free.
+            <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto lowercase">
+              ready to grow? we'll build your{" "}
+              <span className="gradient-text-bright">evolvance growth plan</span>, free.
             </h2>
             <Link to="/book" className="mt-8 inline-block">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6">
-                Book a Discovery Call
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 lowercase">
+                book a discovery call
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>

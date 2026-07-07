@@ -2,70 +2,34 @@ import { motion } from "framer-motion";
 import { Workflow, PhoneCall, Megaphone, GraduationCap, BarChart3, Plug, FileText } from "lucide-react";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 const skills = [
-  {
-    icon: Workflow,
-    title: "Workflow Automation",
-    desc: "Replace manual busywork with reliable, AI-powered systems that run themselves.",
-    span: "col-span-2 row-span-2",
-    anchor: true,
-  },
-  {
-    icon: PhoneCall,
-    title: "Client Callback & Follow-Up",
-    desc: "Automated follow-up and call analytics that turn conversations into clients.",
-    span: "col-span-2",
-  },
-  {
-    icon: Megaphone,
-    title: "Lead Generation",
-    desc: "AI-driven outbound and inbound engines that keep your pipeline full.",
-    span: "col-span-1",
-  },
-  {
-    icon: GraduationCap,
-    title: "AI Training & Upskilling",
-    desc: "Give your team the fluency to run new systems with confidence.",
-    span: "col-span-1",
-  },
-  {
-    icon: BarChart3,
-    title: "Data & Reporting",
-    desc: "Dashboards that turn scattered numbers into one clear picture.",
-    span: "col-span-1",
-  },
-  {
-    icon: Plug,
-    title: "Systems Integration",
-    desc: "Connect the tools you already use so nothing falls through the cracks.",
-    span: "col-span-1",
-  },
-  {
-    icon: FileText,
-    title: "Process Documentation",
-    desc: "Clear SOPs that make every process repeatable, not tribal knowledge.",
-    span: "col-span-2",
-  },
+  { icon: Workflow, title: "workflow automation", desc: "manual busywork, handled by systems that run themselves." },
+  { icon: PhoneCall, title: "client follow-up", desc: "call analytics and follow-up that close the loop." },
+  { icon: Megaphone, title: "lead generation", desc: "outbound and inbound engines that keep the pipeline full." },
+  { icon: GraduationCap, title: "ai training", desc: "your team, fluent in the tools you're now running." },
+  { icon: BarChart3, title: "data & reporting", desc: "one clear picture instead of scattered numbers." },
+  { icon: Plug, title: "systems integration", desc: "the tools you already use, actually talking to each other." },
+  { icon: FileText, title: "process documentation", desc: "repeatable process, not knowledge stuck in one person's head." },
 ];
 
 const SkillsBento = () => {
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container mx-auto px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
-          className="text-center max-w-2xl mx-auto mb-14 md:mb-16"
+          className="text-center max-w-xl mx-auto mb-10 md:mb-12"
         >
-          <p className="text-overline text-deep-azure mb-3">What We Can Do</p>
-          <h2 className="font-body text-h1 font-bold leading-tight">
-            Every skill it takes to run a modern, AI-evolved business
+          <p className="text-overline text-deep-azure mb-2 lowercase">what we can do</p>
+          <h2 className="font-body text-h2 font-bold leading-tight lowercase">
+            the skills behind the phases
           </h2>
         </motion.div>
 
@@ -74,38 +38,15 @@ const SkillsBento = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={fadeUp}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
         >
           {skills.map((s) => {
             const Icon = s.icon;
             return (
-              <div
-                key={s.title}
-                className={`plain-card p-5 md:p-6 flex flex-col overflow-hidden relative ${s.span}`}
-              >
-                <div
-                  className="absolute top-0 left-0 right-0 h-1"
-                  style={{ background: "linear-gradient(90deg, #016B88, #129094, #26BB70)" }}
-                />
-                <div
-                  className={`rounded-lg bg-pale-azure flex items-center justify-center shrink-0 ${
-                    s.anchor ? "h-12 w-12 mb-4" : "h-10 w-10 mb-3"
-                  }`}
-                >
-                  <Icon className={s.anchor ? "h-6 w-6 text-deep-azure" : "h-5 w-5 text-deep-azure"} />
-                </div>
-                <h3
-                  className={`font-body font-bold leading-tight ${
-                    s.anchor ? "text-h2" : "text-h3"
-                  }`}
-                >
-                  {s.title}
-                </h3>
-                <p
-                  className={`mt-2 font-body text-muted-foreground leading-relaxed ${
-                    s.anchor ? "text-body" : "text-caption"
-                  }`}
-                >
+              <div key={s.title} className="plain-card p-4 md:p-5 flex flex-col">
+                <Icon className="h-4 w-4 text-deep-azure mb-2.5 shrink-0" />
+                <h3 className="font-body font-semibold text-body leading-tight lowercase">{s.title}</h3>
+                <p className="mt-1 text-caption font-body text-muted-foreground leading-relaxed lowercase">
                   {s.desc}
                 </p>
               </div>

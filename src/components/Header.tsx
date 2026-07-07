@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/egp-logo-transparent.png";
 
 const navItems = [
-  { label: "Our Service", path: "/" },
-  { label: "Podcast", path: "/podcast" },
-  { label: "Contact Us", path: "/contact" },
+  { label: "our service", path: "/" },
+  { label: "podcast", path: "/podcast" },
+  { label: "contact us", path: "/contact" },
 ];
 
 const Header = () => {
@@ -83,7 +83,7 @@ const Header = () => {
                 ))}
                 <Link to="/book" onClick={() => setOpen(false)}>
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    Book a Discovery Call
+                    book a discovery call
                   </Button>
                 </Link>
               </nav>
@@ -92,7 +92,7 @@ const Header = () => {
 
           <Link to="/book" className="hidden md:block">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 px-5">
-              Book a Discovery Call
+              book a discovery call
             </Button>
           </Link>
         </div>

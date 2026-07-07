@@ -2,9 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/egp-logo-transparent.png";
 
 const navItems = [
-  { label: "Our Service", path: "/" },
-  { label: "The Evolution Podcast", path: "/podcast" },
-  { label: "Contact Us", path: "/contact" },
+  { label: "our service", path: "/" },
+  { label: "the evolution podcast", path: "/podcast" },
+  { label: "contact us", path: "/contact" },
 ];
 
 const Footer = () => {
