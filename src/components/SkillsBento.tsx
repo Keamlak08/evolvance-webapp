@@ -21,7 +21,7 @@ const modules = [
     desc: "Every system starts with how your team already works today. We shape the AI around your process, never the other way around.",
     span: "col-span-2 row-span-2",
     anchor: true,
-    tone: 18,
+    tone: 30,
   },
   {
     icon: Plug,
@@ -29,7 +29,7 @@ const modules = [
     desc: "No new dashboard to check every morning — Evolvance plugs into the software already running your business.",
     span: "col-span-2",
     anchor: false,
-    tone: 13,
+    tone: 25,
   },
   {
     icon: UserRoundCheck,
@@ -37,7 +37,7 @@ const modules = [
     desc: "You work with Ethan directly, not a rotating account team.",
     span: "col-span-1",
     anchor: false,
-    tone: 21,
+    tone: 34,
   },
   {
     icon: Unlock,
@@ -45,7 +45,7 @@ const modules = [
     desc: "Month-to-month, by design. We keep earning the partnership, not coasting on a contract.",
     span: "col-span-1",
     anchor: false,
-    tone: 12,
+    tone: 24,
   },
   {
     icon: FileStack,
@@ -53,7 +53,7 @@ const modules = [
     desc: "Every workflow ships with a written SOP, so it still runs even if the person who built it is out.",
     span: "col-span-1",
     anchor: false,
-    tone: 24,
+    tone: 37,
   },
   {
     icon: UserRound,
@@ -61,7 +61,7 @@ const modules = [
     desc: "Whoever scopes the work is who builds it — no hand-offs, no lost context.",
     span: "col-span-1",
     anchor: false,
-    tone: 14,
+    tone: 26,
   },
   {
     icon: PackageCheck,
@@ -69,22 +69,21 @@ const modules = [
     desc: "You get shipped systems and live automations, not a strategy deck telling you what to do next.",
     span: "col-span-2",
     anchor: false,
-    tone: 11,
+    tone: 23,
   },
 ] as const;
 
 /**
- * True bento layout: one unified outer frame (bg-shell, matching the
- * brand's other dark "impact" surfaces — hero, footer, final CTA) with
- * internal modules subdivided by a shared gap, rather than separate cards
- * floating with page-level gutters between them like the previous grid.
+ * True bento layout: one unified outer frame with internal modules
+ * subdivided by a shared gap, rather than separate cards floating with
+ * page-level gutters between them like the previous grid.
  *
- * Each module is shaded with the SAME hue/saturation as --shell, only the
- * lightness (`tone`, in %) changes — tonal variation, not hue variation,
- * per the brief. This is computed inline rather than as static Tailwind
- * classes because the whole point is each tile getting its own specific
- * step on one shared scale, which isn't something the default palette
- * expresses as utility classes.
+ * The frame and every module share the exact same hue/saturation
+ * (205, 40%) — only the lightness (`tone`, in %) changes per tile —
+ * tonal variation, not hue variation, per the brief. This used to reuse
+ * the --shell token directly, but this section runs lighter than the
+ * hero/footer's near-black shell tone by request, so it now has its own
+ * dedicated (lighter) point on the same navy scale instead.
  */
 const SkillsBento = () => {
   return (
@@ -97,7 +96,6 @@ const SkillsBento = () => {
           variants={fadeUp}
           className="text-center max-w-2xl mx-auto mb-14 md:mb-16"
         >
-          <p className="text-overline text-deep-azure mb-3">How We Operate</p>
           <h2 className="font-body text-h1 font-bold leading-tight">
             The way we work is part of the product
           </h2>
@@ -108,7 +106,8 @@ const SkillsBento = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={fadeUp}
-          className="rounded-[1.75rem] bg-shell p-2 md:p-3"
+          style={{ backgroundColor: "hsl(205 40% 17%)" }}
+          className="rounded-[1.75rem] p-2 md:p-3"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
             {modules.map((m) => {
@@ -116,7 +115,7 @@ const SkillsBento = () => {
               return (
                 <div
                   key={m.title}
-                  style={{ backgroundColor: `hsl(205 55% ${m.tone}%)` }}
+                  style={{ backgroundColor: `hsl(205 40% ${m.tone}%)` }}
                   className={`rounded-2xl p-5 md:p-6 flex flex-col overflow-hidden ${m.span}`}
                 >
                   <div

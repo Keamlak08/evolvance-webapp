@@ -100,10 +100,10 @@ const Services = () => {
    */
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set(horizonRef.current, { opacity: 0.75, filter: "brightness(1)" });
+      gsap.set(horizonRef.current, { opacity: 0.9, filter: "brightness(1.3)" });
       gsap.to(horizonRef.current, {
-        opacity: 1,
-        filter: "brightness(1.9)",
+        opacity: 0.95,
+        filter: "brightness(2)",
         ease: "none",
         scrollTrigger: {
           trigger: heroRef.current,
@@ -138,10 +138,6 @@ const Services = () => {
             transition={{ duration: 0.7 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <p className="text-overline text-primary mb-5">
-              AI-Powered Growth for Small &amp; Medium Businesses
-            </p>
-
             {/* Tightened, sentence-weight headline — medium size/weight
                 rather than the old oversized/extrabold display treatment,
                 closer to how Launch/Subduxion pitch theirs, while keeping
@@ -171,7 +167,7 @@ const Services = () => {
               <Link to="/book">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6 animate-pulse-glow"
+                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6"
                 >
                   Book a Discovery Call
                   <ArrowRight className="ml-1 h-4 w-4" />
@@ -200,8 +196,8 @@ const Services = () => {
           ref={horizonRef}
           className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.85) 50%, transparent 100%)",
-            boxShadow: "0 0 22px 2px hsla(193,99%,55%,0.5)",
+            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.92) 50%, transparent 100%)",
+            boxShadow: "0 0 26px 3px hsla(193,99%,55%,0.6)",
           }}
         />
       </section>
@@ -245,7 +241,6 @@ const Services = () => {
             variants={fadeUp}
             className="text-center max-w-2xl mx-auto mb-14 md:mb-20"
           >
-            <p className="text-overline text-deep-azure mb-3">The Evolvance Partnership Model</p>
             <h2 className="font-body text-h1 font-bold leading-tight">
               A three-phase pathway to owning your growth evolution
             </h2>
@@ -275,7 +270,9 @@ const Services = () => {
 
                   {/* Content column */}
                   <div className={`flex-1 min-w-0 ${isLast ? "pb-0" : "pb-14 md:pb-20"}`}>
-                    <p className="text-overline text-deep-azure mb-2">{phase.n}</p>
+                    <p className="text-xs font-body font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                      {phase.n}
+                    </p>
                     <h3 className="font-body text-h2 font-bold leading-tight">{phase.title}</h3>
 
                     <div className="mt-4 rounded-lg border-l-4 border-primary bg-pale-azure px-3.5 py-2.5 max-w-xl">
@@ -323,7 +320,6 @@ const Services = () => {
               />
             </div>
             <div className="flex-1 max-w-2xl">
-              <p className="text-overline text-deep-azure mb-2">Meet the Founder</p>
               <h2 className="font-body text-h1 font-bold leading-tight">Ethan Schroeher</h2>
               <p className="mt-1 font-body text-body-lg font-semibold text-deep-azure">CEO &amp; Founder</p>
               <p className="mt-5 text-foreground/85 font-body leading-relaxed text-body">

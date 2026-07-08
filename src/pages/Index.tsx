@@ -55,14 +55,14 @@ const Index = () => {
             <img
               src={egpHeroLogo}
               alt="Evolvance Growth Partners"
-              className="mx-auto h-[16rem] w-[16rem] md:h-[48rem] md:w-[48rem] drop-shadow-lg object-contain"
+              className="mx-auto h-[10rem] w-[10rem] md:h-[24rem] md:w-[24rem] drop-shadow-lg object-contain"
             />
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="mx-auto mt-4 font-display font-bold leading-[1.05] tracking-tight text-foreground text-4xl md:text-5xl"
+            className="mx-auto mt-4 font-display font-bold leading-[1.05] tracking-tight text-foreground text-2xl md:text-3xl"
           >
             We Partner with Small & Medium Businesses<br />to Empower Growth Evolution by Leveraging AI
           </motion.p>
@@ -70,7 +70,7 @@ const Index = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="mx-auto mt-4 md:mt-6 max-w-6xl leading-relaxed text-muted-foreground text-base md:text-5xl"
+            className="mx-auto mt-4 md:mt-6 max-w-6xl leading-relaxed text-muted-foreground text-sm md:text-lg"
           >
             We help you evolve your business and client impact through AI-powered growth solutions
           </motion.p>
@@ -83,12 +83,12 @@ const Index = () => {
             <Link to="/book">
               <Button
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold animate-pulse-glow py-4 px-6 md:py-[24px] md:px-[10px] text-base md:text-3xl"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-body font-semibold animate-pulse-glow py-3 px-4 md:py-4 md:px-6 text-sm md:text-base"
               >
                 Book Your Discovery Call
               </Button>
             </Link>
-            <p className="text-muted-foreground text-center text-sm md:text-3xl">
+            <p className="text-muted-foreground text-center text-sm md:text-base">
               Tells us about your growth goals so
               <br />
               we can conquer them together!

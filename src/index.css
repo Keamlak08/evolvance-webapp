@@ -67,6 +67,33 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Overlay scrollbar (see CustomScrollbar.tsx)                        */
+  /* ------------------------------------------------------------------ */
+  /* WHY: the native scrollbar reserves real layout width whenever the
+     page is scrollable, and gives it back when it isn't. That's what
+     caused the page to visibly shift sideways right after the splash
+     screen unlocks scrolling — every 100%-wide container got a little
+     narrower the instant the browser added a scrollbar. Hiding the native
+     scrollbar everywhere means that width never changes, on any page, at
+     any time — the layout-shift bug can't happen because the thing that
+     caused it no longer exists. CustomScrollbar.tsx is what replaces it
+     visually, as a fixed-position overlay that costs zero layout width.
+     `overflow-x: hidden` is a defensive backstop against any incidental
+     1-2px horizontal overflow (e.g. from GSAP ScrollTrigger's pin-spacer
+     elements), rather than a fix for a specific known element. */
+  html {
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* legacy Edge/IE */
+  }
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, modern Edge */
+  }
+  body {
+    overflow-x: hidden;
+  }
+
   /* One typeface (Montserrat) runs the whole site. Hierarchy comes from
      weight and size, not from switching families — the hero headline and
      splash screen use font-extrabold/font-black, most headings use
@@ -77,19 +104,9 @@
   }
 }
 
-/* Azure glow */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 18px hsla(193, 99%, 50%, 0.30); }
-  50% { box-shadow: 0 0 36px hsla(193, 99%, 50%, 0.55); }
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .animate-float {
