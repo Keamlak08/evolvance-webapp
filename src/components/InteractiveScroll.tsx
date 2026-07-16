@@ -51,7 +51,7 @@ const painPoints = [
   { text: "Falling behind competitors already using AI", top: "15%", left: "-3%" },
   { text: "Growth capped by your own bandwidth", top: "5%", left: "15%" },
   { text: "Scaling by adding extra headcount", top: "0%", left: "-40%" },
-  { text: "Technology spend without measurable ROI", top: "20%", left: "-20%" },
+  { text: "Scattered AI tools", top: "20%", left: "-20%" },
 ] as const;
 
 // Each solution answers the pain point at the same index — a deliberate
@@ -64,7 +64,7 @@ const solutions: { icon: LucideIcon; label: string }[] = [
   { icon: RefreshCw, label: "You adopt AI on your terms, not playing catch-up" },
   { icon: Repeat, label: "Growth that isn't capped by your calendar" },
   { icon: Users, label: "More output from the team you already have" },
-  { icon: Gauge, label: "Every dollar tied to a result you can point to" },
+  { icon: Gauge, label: "One accountable partner, not a pile of point solutions" },
 ];
 
 // Timeline pacing constants (arbitrary GSAP "time" units — the whole

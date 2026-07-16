@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +7,7 @@ import IntroSplash from "@/components/IntroSplash";
 import HeroBackdrop from "@/components/HeroBackdrop";
 import InteractiveScroll from "@/components/InteractiveScroll";
 import SkillsBento from "@/components/SkillsBento";
+import RevealOnScroll from "@/components/RevealOnScroll";
 import { ArrowRight, CheckCircle2, LineChart, Workflow, Sparkles } from "lucide-react";
 import ethanHeadshot from "@/assets/ethan-headshot.png";
 import bcgLogo from "@/assets/bcg-logo.png";
@@ -21,11 +21,6 @@ import linkedinIcon from "@/assets/linkedin-icon.png";
 // gsap.registerPlugin() is idempotent, so calling it again is a no-op if
 // InteractiveScroll's module already ran.
 gsap.registerPlugin(ScrollTrigger);
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
 
 const credentials = [
   { logo: bcgLogo, label: "Boston Consulting Group" },
@@ -100,10 +95,10 @@ const Services = () => {
    */
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set(horizonRef.current, { opacity: 0.9, filter: "brightness(1.3)" });
+      gsap.set(horizonRef.current, { opacity: 0.75, filter: "brightness(1)" });
       gsap.to(horizonRef.current, {
-        opacity: 0.95,
-        filter: "brightness(2)",
+        opacity: 1,
+        filter: "brightness(1.9)",
         ease: "none",
         scrollTrigger: {
           trigger: heroRef.current,
@@ -132,12 +127,10 @@ const Services = () => {
         <HeroBackdrop />
 
         <div className="container relative z-10 mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="mx-auto max-w-3xl text-center"
-          >
+          {/* Four direct children here (headline, outcomes row, positioning
+              line, buttons) means RevealOnScroll staggers all four in as a
+              small cascade rather than one flat block fading in together. */}
+          <RevealOnScroll className="mx-auto max-w-3xl text-center" stagger={0.15}>
             {/* Tightened, sentence-weight headline — medium size/weight
                 rather than the old oversized/extrabold display treatment,
                 closer to how Launch/Subduxion pitch theirs, while keeping
@@ -163,10 +156,20 @@ const Services = () => {
               ))}
             </div>
 
+            {/* Positioning line, pulled directly from the short business
+                plan's own one-line summary of the pivot (§01) — kept
+                verbatim rather than paraphrased, since the plan's own
+                phrasing is already tight and quotable. */}
+            <p className="mt-5 font-body text-sm md:text-base text-shell-muted max-w-xl mx-auto">
+              The partner who understands your business well enough to see the opportunity, and
+              understands AI well enough to capture it.
+            </p>
+
             <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
               <Link to="/book">
                 <Button
                   size="lg"
+                  data-cursor-label="Book"
                   className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-6"
                 >
                   Book a Discovery Call
@@ -177,13 +180,14 @@ const Services = () => {
                 <Button
                   size="lg"
                   variant="ghost"
+                  data-cursor-label="View"
                   className="w-full sm:w-auto border border-shell-border bg-transparent text-shell-foreground hover:bg-white/10 hover:text-shell-foreground px-7 py-6"
                 >
                   See How It Works
                 </Button>
               </a>
             </div>
-          </motion.div>
+          </RevealOnScroll>
         </div>
 
         {/* Glowing horizon line — a reactive scroll indicator, not a
@@ -196,8 +200,8 @@ const Services = () => {
           ref={horizonRef}
           className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.92) 50%, transparent 100%)",
-            boxShadow: "0 0 26px 3px hsla(193,99%,55%,0.6)",
+            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.85) 50%, transparent 100%)",
+            boxShadow: "0 0 22px 2px hsla(193,99%,55%,0.5)",
           }}
         />
       </section>
@@ -207,7 +211,7 @@ const Services = () => {
       {/* ============ CREDENTIAL BAR ============ */}
       <section className="bg-secondary/30 py-8 border-b border-border">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10">
+          <RevealOnScroll className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10">
             <p className="text-caption font-body text-muted-foreground text-center md:text-left shrink-0">
               Led by a former BCG &amp; Innosight consultant
             </p>
@@ -221,7 +225,7 @@ const Services = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </RevealOnScroll>
         </div>
       </section>
 
@@ -234,32 +238,23 @@ const Services = () => {
           for the whole section, not just the old top-bar detail. */}
       <section id="phases" className="py-20 md:py-28">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="text-center max-w-2xl mx-auto mb-14 md:mb-20"
-          >
+          <RevealOnScroll className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
             <h2 className="font-body text-h1 font-bold leading-tight">
               A three-phase pathway to owning your growth evolution
             </h2>
-          </motion.div>
+          </RevealOnScroll>
 
-          <div className="mx-auto max-w-3xl">
+          {/* Each phase block below is a direct child of this wrapper, so
+              RevealOnScroll staggers the three phases in one after another
+              as the section scrolls into view, instead of the old
+              per-phase Framer Motion instance each section used to carry
+              individually. */}
+          <RevealOnScroll className="mx-auto max-w-3xl" stagger={0.2} y={36}>
             {phases.map((phase, idx) => {
               const Icon = phase.icon;
               const isLast = idx === phases.length - 1;
               return (
-                <motion.div
-                  key={phase.title}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                  variants={fadeUp}
-                  transition={{ delay: idx * 0.1 }}
-                  className="relative flex gap-6 md:gap-10"
-                >
+                <div key={phase.title} className="relative flex gap-6 md:gap-10">
                   {/* Numeral/spine column */}
                   <div className="flex flex-col items-center shrink-0">
                     <div className="flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-pale-azure shrink-0">
@@ -293,10 +288,10 @@ const Services = () => {
                       ))}
                     </ul>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
-          </div>
+          </RevealOnScroll>
         </div>
       </section>
 
@@ -305,12 +300,12 @@ const Services = () => {
       {/* ============ MEET ETHAN ============ */}
       <section className="py-20 md:py-28 bg-secondary/30 border-y border-border">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
+          {/* Two direct children (headshot, text column) means the photo
+              and the copy arrive as their own small staggered beat rather
+              than both fading in as one indistinguishable block. */}
+          <RevealOnScroll
             className="flex flex-col items-center gap-10 md:gap-14 md:flex-row md:items-start"
+            stagger={0.15}
           >
             <div className="flex-shrink-0">
               <img
@@ -346,36 +341,36 @@ const Services = () => {
                 href="https://www.linkedin.com/in/ethan-schroeher/"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cursor-label="View"
                 className="mt-6 inline-flex items-center gap-2 text-deep-azure hover:text-primary transition-colors text-body font-body font-semibold"
               >
                 <img src={linkedinIcon} alt="LinkedIn" className="h-5 w-5 rounded" />
                 Connect on LinkedIn &rarr;
               </a>
             </div>
-          </motion.div>
+          </RevealOnScroll>
         </div>
       </section>
 
       {/* ============ FINAL CTA BAND ============ */}
       <section className="bg-shell py-16 md:py-20">
         <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-          >
+          <RevealOnScroll stagger={0.15}>
             <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto">
               Ready to grow? We'll build your{" "}
               <span className="gradient-text-bright">Evolvance Growth Plan</span>, free.
             </h2>
             <Link to="/book" className="mt-8 inline-block">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6">
+              <Button
+                size="lg"
+                data-cursor-label="Book"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6"
+              >
                 Book a Discovery Call
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
-          </motion.div>
+          </RevealOnScroll>
         </div>
       </section>
     </div>

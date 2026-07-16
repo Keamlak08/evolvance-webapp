@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CustomScrollbar from "./components/CustomScrollbar";
+import CustomCursor from "./components/CustomCursor";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import BookDiscovery from "./pages/BookDiscovery";
@@ -16,6 +17,7 @@ const App = () => (
     <Toaster />
     <Sonner />
     <CustomScrollbar />
+    <CustomCursor />
     <BrowserRouter>
       <Header />
       <Routes>

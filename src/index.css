@@ -263,3 +263,44 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Custom cursor (CustomCursor.tsx)                                    */
+/* ------------------------------------------------------------------ */
+/* WHY !important: Tailwind's own Preflight reset already sets an
+   explicit `cursor: pointer` on <button>/[role=button], and a few
+   elements elsewhere in the codebase (the intro splash's click-to-skip
+   overlay, the custom scrollbar's drag handle) carry their own explicit
+   `cursor-pointer` utility class, which lives in Tailwind's utilities
+   layer — a layer that, by design, overrides base styles. Since `cursor`
+   is only INHERITED when nothing more specific already set it, a plain
+   `cursor: none` on <html> would lose to every one of those explicit,
+   same-or-higher-specificity rules. `!important` is the one reliable way
+   to guarantee CustomCursor.tsx's dot/ring are the only cursor shown
+   anywhere on the site. Scoped to `(pointer: fine)` so touch devices —
+   which never render CustomCursor's elements in the first place — are
+   completely unaffected. */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* Ring's resting vs. hover-expanded size. A plain CSS transition on
+   width/height (rather than a `transform: scale()`) is used deliberately:
+   CustomCursor.tsx already writes `transform` on this element every
+   animation frame (for position), so driving the expansion through a
+   different pair of properties avoids one clobbering the other. Because
+   the position transform includes `translate(-50%, -50%)`, which is
+   relative to the element's OWN size, growing width/height here keeps the
+   ring centered on the cursor automatically — no extra offset math needed. */
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+}
+.cursor-ring.cursor-ring-active {
+  width: 64px;
+  height: 64px;
+  border-color: hsl(var(--primary));
+}
