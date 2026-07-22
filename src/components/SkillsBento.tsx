@@ -1,4 +1,5 @@
 import RevealOnScroll from "@/components/RevealOnScroll";
+import SectionBackdrop from "@/components/SectionBackdrop";
 import { Boxes, Plug, UserRound, Unlock, FileStack, UserRoundCheck, PackageCheck } from "lucide-react";
 
 /**
@@ -82,8 +83,9 @@ const modules = [
  */
 const SkillsBento = () => {
   return (
-    <section className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-6">
+    <section className="relative py-20 md:py-28 bg-background">
+      <SectionBackdrop tone="light" />
+      <div className="container relative z-10 mx-auto px-6">
         <RevealOnScroll className="text-center max-w-2xl mx-auto mb-14 md:mb-16">
           <h2 className="font-body text-h1 font-bold leading-tight">
             The way we work is part of the product

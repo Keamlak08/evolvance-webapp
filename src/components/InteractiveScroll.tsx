@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AlertTriangle, TrendingUp, Users, Zap, Gauge, RefreshCw, Repeat, LucideIcon } from "lucide-react";
+import SectionBackdrop from "@/components/SectionBackdrop";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,7 +65,7 @@ const solutions: { icon: LucideIcon; label: string }[] = [
   { icon: RefreshCw, label: "You adopt AI on your terms, not playing catch-up" },
   { icon: Repeat, label: "Growth that isn't capped by your calendar" },
   { icon: Users, label: "More output from the team you already have" },
-  { icon: Gauge, label: "One accountable partner, not a pile of point solutions" },
+  { icon: Gauge, label: "Every dollar tied to a result you can point to" },
 ];
 
 // Timeline pacing constants (arbitrary GSAP "time" units — the whole
@@ -210,7 +211,16 @@ const InteractiveScroll = () => {
 
   return (
     <div ref={wrapperRef} className="relative h-[480vh]">
-      <div ref={panelRef} className="h-screen w-full overflow-hidden bg-background flex items-center justify-center">
+      <div
+        ref={panelRef}
+        className="relative h-screen w-full overflow-hidden bg-background flex items-center justify-center"
+      >
+        {/* "A little bit of a backdrop" — the same ambient contour texture
+            as the sections below, at half its already-quiet opacity, so
+            it reads as a faint connective touch behind the pinned cards
+            rather than competing with them or the glitch effect. */}
+        <SectionBackdrop tone="light" opacityScale={0.5} />
+
         {/* Problem heading, dead center */}
         <p
           ref={problemHeadingRef}

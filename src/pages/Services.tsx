@@ -8,7 +8,9 @@ import HeroBackdrop from "@/components/HeroBackdrop";
 import InteractiveScroll from "@/components/InteractiveScroll";
 import SkillsBento from "@/components/SkillsBento";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import SectionBackdrop from "@/components/SectionBackdrop";
 import { ArrowRight, CheckCircle2, LineChart, Workflow, Sparkles } from "lucide-react";
+import { waitForSplashClear } from "@/lib/waitForSplashClear";
 import ethanHeadshot from "@/assets/ethan-headshot.png";
 import bcgLogo from "@/assets/bcg-logo.png";
 import innosightLogo from "@/assets/innosight-logo.jpeg";
@@ -51,7 +53,7 @@ const phases = [
   {
     n: "Phase 02",
     icon: Workflow,
-    title: "Operations Growth",
+    title: "Operation Efficiency",
     guarantee: "Guaranteed bottom-line growth through operational effectiveness, or we work for free.",
     bullets: [
       { h: "Opportunity Prioritization", d: "Map every workflow and target the highest-leverage automations." },
@@ -78,6 +80,7 @@ const phases = [
 
 const Services = () => {
   const heroRef = useRef<HTMLElement>(null);
+  const horizonWrapperRef = useRef<HTMLDivElement>(null);
   const horizonRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -92,6 +95,25 @@ const Services = () => {
    * The line's box-shadow is set once, statically, in the JSX below, and
    * scrubbing brightness/opacity on top of that fakes an intensifying glow
    * for a fraction of the cost.
+   *
+   * WHY A SEPARATE WRAPPER FOR A ONE-TIME ENTRANCE FADE: this used to
+   * `gsap.set()` horizonRef straight to its resting opacity (0.75) the
+   * instant this effect ran — which is well before IntroSplash finishes,
+   * since IntroSplash is just a z-[100] overlay stacked on top, not
+   * something that delays the hero underneath from mounting. That meant
+   * the glowing line was already sitting there, fully visible mid-glow,
+   * for the entire time it was hidden behind the splash — so the instant
+   * the splash's swipe-up reveal reached it, it appeared to snap in
+   * fully-formed with zero transition, which read as a glitch next to
+   * every other hero element fading in smoothly via RevealOnScroll.
+   *
+   * Rather than touching the scroll-scrubbed brightness/opacity logic
+   * below at all (it already works correctly), this wraps the line in an
+   * outer element whose OWN opacity fades in once, after the splash
+   * clears — a parent's opacity multiplies with a child's own opacity
+   * visually, so the wrapper's one-time fade composes cleanly with the
+   * inner scroll-driven opacity/brightness without the two ever fighting
+   * over the same GSAP-tweened property.
    */
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -108,7 +130,16 @@ const Services = () => {
         },
       });
     }, heroRef);
-    return () => ctx.revert();
+
+    gsap.set(horizonWrapperRef.current, { opacity: 0 });
+    const cancelWait = waitForSplashClear(() => {
+      gsap.to(horizonWrapperRef.current, { opacity: 1, duration: 0.6, ease: "power2.out" });
+    });
+
+    return () => {
+      ctx.revert();
+      cancelWait();
+    };
   }, []);
 
   return (
@@ -126,17 +157,34 @@ const Services = () => {
             asked to avoid, and weren't actually interactive. */}
         <HeroBackdrop />
 
-        <div className="container relative z-10 mx-auto px-6">
+        <div className="container relative z-10 mx-auto px-6 md:pl-16 lg:pl-24">
           {/* Four direct children here (headline, outcomes row, positioning
               line, buttons) means RevealOnScroll staggers all four in as a
-              small cascade rather than one flat block fading in together. */}
-          <RevealOnScroll className="mx-auto max-w-3xl text-center" stagger={0.15}>
-            {/* Tightened, sentence-weight headline — medium size/weight
-                rather than the old oversized/extrabold display treatment,
-                closer to how Launch/Subduxion pitch theirs, while keeping
-                the first-person "We partner with..." voice that's specific
-                to Evolvance rather than copying either reference verbatim. */}
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.2] tracking-tight text-shell-foreground">
+              small cascade rather than one flat block fading in together.
+
+              Left-aligned (not centered), but no longer flush against the
+              container's bare left edge either — md:pl-16/lg:pl-24 above
+              nudges the whole block right a bit further, since fully flush
+              read as too far left. Still not using mx-auto to re-center
+              it, which is what keeps it clearly off-center rather than
+              splitting the difference back to the middle. */}
+          <RevealOnScroll className="max-w-3xl md:max-w-4xl lg:max-w-5xl text-left" stagger={0.15}>
+            {/* Sized up from the previous pass: that version undersold how
+                much room a full-viewport hero actually has, and read as
+                small/plain once centered copy stopped being the thing
+                filling the space. Scaled to roughly double TechClear's
+                own proportions relative to word count (their headline is
+                about half as many words as ours, at a much larger size).
+
+                Widened from max-w-3xl to this max-w-5xl ladder so the
+                sentence settles into roughly three lines instead of the
+                five it was wrapping into at the narrower width — the brief
+                explicitly OK'd letting lines run longer to get there
+                rather than shrinking the type back down. leading-tight
+                (1.25) replaces the previous leading-[1.12]: that tighter
+                value was crowding descenders (the tail on "g" in "growth")
+                against the line below closely enough to look clipped. */}
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight text-shell-foreground">
               We partner with small and medium businesses to power{" "}
               <span className="gradient-text-bright">growth evolution</span> through AI.
             </h1>
@@ -144,8 +192,11 @@ const Services = () => {
             {/* Three biggest client outcomes — horizontal, minimal vertical
                 space, smaller/medium weight than the headline. divide-x
                 draws the separators for free (skips the first child
-                automatically) instead of hand-rolling divider dots. */}
-            <div className="mt-7 flex flex-wrap items-center justify-center divide-x divide-shell-border">
+                automatically) instead of hand-rolling divider dots.
+                justify-start (not -center) so this row starts flush at
+                the same left edge as the headline above it, rather than
+                centering independently within its own row width. */}
+            <div className="mt-7 flex flex-wrap items-center justify-start divide-x divide-shell-border">
               {outcomes.map((o) => (
                 <span
                   key={o}
@@ -160,12 +211,12 @@ const Services = () => {
                 plan's own one-line summary of the pivot (§01) — kept
                 verbatim rather than paraphrased, since the plan's own
                 phrasing is already tight and quotable. */}
-            <p className="mt-5 font-body text-sm md:text-base text-shell-muted max-w-xl mx-auto">
+            <p className="mt-5 font-body text-sm md:text-base text-shell-muted max-w-xl">
               The partner who understands your business well enough to see the opportunity, and
               understands AI well enough to capture it.
             </p>
 
-            <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-start">
               <Link to="/book">
                 <Button
                   size="lg"
@@ -195,22 +246,30 @@ const Services = () => {
             before, and intensifies further via the scroll-linked effect
             set up in the useLayoutEffect above. Uses the brand's own azure
             glow color (the same one CTA buttons pulse with) instead of
-            plain white, so it reads as an intentional brand detail. */}
-        <div
-          ref={horizonRef}
-          className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.85) 50%, transparent 100%)",
-            boxShadow: "0 0 22px 2px hsla(193,99%,55%,0.5)",
-          }}
-        />
+            plain white, so it reads as an intentional brand detail.
+
+            Split into a wrapper (owns position + the one-time entrance
+            fade) and an inner element (owns the existing scroll-scrubbed
+            brightness/opacity) — see the entrance-fade comment above for
+            why these are deliberately two separate elements. */}
+        <div ref={horizonWrapperRef} className="pointer-events-none absolute bottom-0 left-0 right-0 h-px">
+          <div
+            ref={horizonRef}
+            className="h-full w-full"
+            style={{
+              background: "linear-gradient(90deg, transparent 0%, hsla(193,99%,62%,0.85) 50%, transparent 100%)",
+              boxShadow: "0 0 22px 2px hsla(193,99%,55%,0.5)",
+            }}
+          />
+        </div>
       </section>
 
       <InteractiveScroll />
 
       {/* ============ CREDENTIAL BAR ============ */}
-      <section className="bg-secondary/30 py-8 border-b border-border">
-        <div className="container mx-auto px-6">
+      <section className="relative bg-secondary/30 py-8 border-b border-border">
+        <SectionBackdrop tone="light" />
+        <div className="container relative z-10 mx-auto px-6">
           <RevealOnScroll className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10">
             <p className="text-caption font-body text-muted-foreground text-center md:text-left shrink-0">
               Led by a former BCG &amp; Innosight consultant
@@ -236,8 +295,9 @@ const Services = () => {
           brief); the spine itself is a single flat brand-tinted color, not
           a gradient, so the "remove gradient accents" instruction holds
           for the whole section, not just the old top-bar detail. */}
-      <section id="phases" className="py-20 md:py-28">
-        <div className="container mx-auto px-6">
+      <section id="phases" className="relative py-20 md:py-28">
+        <SectionBackdrop tone="light" />
+        <div className="container relative z-10 mx-auto px-6">
           <RevealOnScroll className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
             <h2 className="font-body text-h1 font-bold leading-tight">
               A three-phase pathway to owning your growth evolution
@@ -298,8 +358,9 @@ const Services = () => {
       <SkillsBento />
 
       {/* ============ MEET ETHAN ============ */}
-      <section className="py-20 md:py-28 bg-secondary/30 border-y border-border">
-        <div className="container mx-auto px-6">
+      <section className="relative py-20 md:py-28 bg-secondary/30 border-y border-border">
+        <SectionBackdrop tone="light" />
+        <div className="container relative z-10 mx-auto px-6">
           {/* Two direct children (headshot, text column) means the photo
               and the copy arrive as their own small staggered beat rather
               than both fading in as one indistinguishable block. */}
@@ -353,8 +414,9 @@ const Services = () => {
       </section>
 
       {/* ============ FINAL CTA BAND ============ */}
-      <section className="bg-shell py-16 md:py-20">
-        <div className="container mx-auto px-6 text-center">
+      <section className="relative bg-shell py-16 md:py-20">
+        <SectionBackdrop tone="dark" />
+        <div className="container relative z-10 mx-auto px-6 text-center">
           <RevealOnScroll stagger={0.15}>
             <h2 className="font-body text-h1 font-bold text-shell-foreground leading-tight max-w-2xl mx-auto">
               Ready to grow? We'll build your{" "}

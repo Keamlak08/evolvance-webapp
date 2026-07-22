@@ -6,14 +6,19 @@
 
 @layer base {
   :root {
-    /* Off-white whitespace, matte black text */
-    --background: 36 71% 99%;
+    /* Off-white whitespace, matte black text. Previously 99% lightness,
+       which is close enough to pure white that low-opacity elements
+       drawn against it (SectionBackdrop's contour lines) were reading as
+       invisible -- 96% lightness with a touch less saturation keeps this
+       comfortably a "light neutral" for body text while actually reading
+       as off-white rather than white. */
+    --background: 36 45% 96%;
     --foreground: 0 0% 8%;
 
-    --card: 36 71% 99%;
+    --card: 36 45% 96%;
     --card-foreground: 0 0% 8%;
 
-    --popover: 36 71% 99%;
+    --popover: 36 45% 96%;
     --popover-foreground: 0 0% 8%;
 
     /* Brand Azure */

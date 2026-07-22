@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { waitForSplashClear } from "@/lib/waitForSplashClear";
 
 /**
  * Replaces the browser's native scrollbar with a thin, translucent overlay
@@ -125,8 +126,18 @@ const CustomScrollbar = () => {
       if (!dragging) showThenFade();
     };
 
-    layout();
-    showThenFade();
+    // Deferred (not called immediately): computing thumb size/position off
+    // document.documentElement.scrollHeight while IntroSplash still has the
+    // real page hidden behind it risks an initial measurement taken before
+    // everything (images especially) has settled, which the thumb would
+    // then have to visibly correct the moment the splash reveals it — see
+    // src/lib/waitForSplashClear.ts for the full reasoning. The scroll/
+    // resize/ResizeObserver listeners below stay attached immediately either
+    // way, since merely listening is inert until an actual event fires.
+    const cancelWait = waitForSplashClear(() => {
+      layout();
+      showThenFade();
+    });
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", layout);
@@ -144,6 +155,7 @@ const CustomScrollbar = () => {
     thumb.addEventListener("mouseleave", onThumbLeave);
 
     return () => {
+      cancelWait();
       clearTimeout(fadeTimeout);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", layout);

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { waitForSplashClear } from "@/lib/waitForSplashClear";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,19 +54,12 @@ interface RevealOnScrollProps {
  * a drop-in replacement for a plain grid/flex container — however many
  * children it has, each one gets its own staggered reveal for free.
  *
- * WHY THE MUTATIONOBSERVER GUARD: IntroSplash.tsx locks body scroll
- * (`overflow: hidden`) while it plays, then restores it once it finishes
- * or is skipped. If this component set up its ScrollTrigger while that
- * lock is still active, any wrapper already within the "start" threshold
- * (most commonly the hero, since it's above the fold) would fire its
- * reveal immediately, finish playing, and already be sitting at its
- * fully-revealed resting state by the time the splash actually lifts — so
- * the entrance motion would never actually be seen. A fixed delay would
- * "solve" this only for one exact splash duration and would break the
- * very next time someone clicks "skip." Watching for the lock to clear
- * (rather than guessing IntroSplash's duration) keeps this component
- * correct regardless of whether the splash plays fully or gets skipped,
- * and without needing to touch IntroSplash.tsx itself at all.
+ * WHY THE SPLASH-CLEAR WAIT: this uses the shared `waitForSplashClear`
+ * utility (see src/lib/waitForSplashClear.ts for the full reasoning) so
+ * this component's entrance reveal never plays out entirely hidden behind
+ * IntroSplash.tsx's overlay — which would mean the animation finishes
+ * before anyone can see it, and the content just appears already-settled
+ * the instant the splash reveals it.
  */
 const RevealOnScroll = ({
   children,
@@ -87,7 +81,6 @@ const RevealOnScroll = ({
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let ctx: gsap.Context | undefined;
-    let observer: MutationObserver | undefined;
 
     const setup = () => {
       ctx = gsap.context(() => {
@@ -125,20 +118,10 @@ const RevealOnScroll = ({
       }, wrapper);
     };
 
-    if (document.body.style.overflow === "hidden") {
-      observer = new MutationObserver(() => {
-        if (document.body.style.overflow !== "hidden") {
-          observer?.disconnect();
-          setup();
-        }
-      });
-      observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
-    } else {
-      setup();
-    }
+    const cancelWait = waitForSplashClear(setup);
 
     return () => {
-      observer?.disconnect();
+      cancelWait();
       ctx?.revert();
     };
   }, [stagger, y, scaleFrom, delay]);
